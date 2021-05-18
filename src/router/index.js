@@ -23,7 +23,7 @@ import nestedRouter from './modules/nested'
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
+    roles: ['admin','active']    control the page roles (you can set multiple roles)
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
     noCache: true                if set true, the page will no be cached(default is false)
@@ -138,7 +138,7 @@ export const asyncRoutes = [
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['admin', 'active'] // you can set roles in root nav
     },
     children: [
       {
