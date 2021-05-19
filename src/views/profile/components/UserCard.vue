@@ -12,25 +12,30 @@
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ user.name }}</div>
+        <div class="user-name text-center">{{ user.username }}</div>
         <div class="user-role text-center text-muted">{{ user.role | uppercaseFirst }}</div>
       </div>
     </div>
 
     <div class="user-bio">
+
+      <div class="user-id user-bio-section">
+        <div class="user-bio-section-header"><svg-icon icon-class="id" /><span>{{ user.user_id }}</span></div>
+      </div>
+
       <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>Education</span></div>
+        <div class="user-bio-section-header"><svg-icon icon-class="login" /><span>Last login</span></div>
         <div class="user-bio-section-body">
           <div class="text-muted">
-            JS in Computer Science from the University of Technology
+            {{ user.last_login }}
           </div>
         </div>
       </div>
 
       <div class="user-skills user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
+        <div class="user-bio-section-header"><svg-icon icon-class="join" /><span>Date joined</span></div>
         <div class="user-bio-section-body">
-          <div class="progress-item">
+          <!-- <div class="progress-item">
             <span>Vue</span>
             <el-progress :percentage="70" />
           </div>
@@ -45,6 +50,9 @@
           <div class="progress-item">
             <span>ESLint</span>
             <el-progress :percentage="100" status="success" />
+          </div> -->
+          <div class="text-muted">
+            {{ user.date_joined }}
           </div>
         </div>
       </div>
@@ -62,8 +70,11 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
+          username: '',
           email: '',
+          user_id: '',
+          last_login: '',
+          date_joined: '',
           avatar: '',
           role: ''
         }

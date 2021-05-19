@@ -1,9 +1,9 @@
 <template>
   <el-form>
-    <el-form-item label="Name">
-      <el-input v-model.trim="user.name" />
+    <el-form-item name="username" label="Name">
+      <el-input v-model.trim="user.username" />
     </el-form-item>
-    <el-form-item label="Email">
+    <el-form-item name="email" label="Email">
       <el-input v-model.trim="user.email" />
     </el-form-item>
     <el-form-item>
@@ -19,18 +19,29 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
+          username: '',
           email: ''
         }
       }
     }
   },
+  data() {
+    return {
+      updateForm: {
+        'username': this.user.username,
+        'email': this.user.email
+      }
+    }
+  },
+
   methods: {
     submit() {
-      this.$message({
-        message: 'User information has been updated successfully',
-        type: 'success',
-        duration: 5 * 1000
+      this.$store.dispatch('user/update', this.updateForm).then(() => {
+        this.$message({
+          message: 'User information has been updated successfully',
+          type: 'success',
+          duration: 5 * 1000
+        })
       })
     }
   }
