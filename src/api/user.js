@@ -11,8 +11,8 @@ export function login(data) {
 export function getInfo(token) {
   return request({
     url: '/account/mine/',
-    method: 'get',
-    params: { token }
+    method: 'get'
+    // params: { token }
   })
 }
 
@@ -21,6 +21,14 @@ export function update(data) {
     url: '/account/update/',
     method: 'put',
     data
+  })
+}
+
+export function getRecord(query) {
+  return request({
+    url: '/account/record/',
+    method: 'get',
+    params: query
   })
 }
 
