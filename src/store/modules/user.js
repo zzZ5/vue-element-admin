@@ -22,7 +22,7 @@ const mutations = {
   SET_USERNAME: (state, username) => {
     state.username = username
   },
-  SET_EMIAL: (state, email) => {
+  SET_EMAIL: (state, email) => {
     state.email = email
   },
   SET_AVATAR: (state, avatar) => {
