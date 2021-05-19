@@ -25,18 +25,10 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      updateForm: {
-        'username': this.user.username,
-        'email': this.user.email
-      }
-    }
-  },
 
   methods: {
     submit() {
-      this.$store.dispatch('user/update', this.updateForm).then(() => {
+      this.$store.dispatch('user/update', this.user).then(() => {
         this.$message({
           message: 'User information has been updated successfully',
           type: 'success',
