@@ -1,7 +1,7 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="dashboard-active-container">
     <div class=" clearfix">
-      <pan-thumb :image="avatar" style="float: left">
+      <pan-thumb :image="avatar+'?default=mp&size=150'" style="float: left">
         Your roles:
         <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
       </pan-thumb>
@@ -23,7 +23,7 @@ import PanThumb from '@/components/PanThumb'
 import GithubCorner from '@/components/GithubCorner'
 
 export default {
-  name: 'DashboardEditor',
+  name: 'DashboardActive',
   components: { PanThumb, GithubCorner },
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
     margin: 0 auto;
   }
 
-  .dashboard-editor-container {
+  .dashboard-active-container {
     background-color: #e3e3e3;
     min-height: 100vh;
     padding: 50px 60px 0px;
