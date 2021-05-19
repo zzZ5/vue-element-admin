@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, update, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -9,6 +9,7 @@ const state = {
   email: '',
   avatar: '',
   last_login: '',
+  date_joined: '',
   roles: []
 }
 
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_LASTLOGIN: (state, last_login) => {
     state.last_login = last_login
+  },
+  SET_DATEJOINED: (state, date_joined) => {
+    state.date_joined = date_joined
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -62,7 +66,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { id, username, email, last_login, roles, avatar } = data
+        const { id, username, email, last_login, date_joined, roles, avatar } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -75,6 +79,7 @@ const actions = {
         commit('SET_EMAIL', email)
         commit('SET_AVATAR', avatar)
         commit('SET_LASTLOGIN', last_login)
+        commit('SET_DATEJOINED', date_joined)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -82,6 +87,20 @@ const actions = {
     })
   },
 
+  update({ commit }, userInfo) {
+    const { username, email } = userInfo
+    return new Promise((resolve, reject) => {
+      update({ username: username.trim(), email: email }).then(response => {
+        const { data } = response
+        const { username, email } = data
+        commit('SET_USERNAME', username)
+        commit('SET_EMAIL', email)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {

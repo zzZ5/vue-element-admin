@@ -16,9 +16,17 @@ export function getInfo(token) {
   })
 }
 
+export function update(data) {
+  return request({
+    url: '/account/update/',
+    method: 'put',
+    data
+  })
+}
+
 export function logout() {
   return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
+    url: '/account/logout/',
+    method: 'get'
   })
 }
