@@ -104,7 +104,20 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/guide/index'),
         name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        meta: { title: 'Guide', icon: 'guide', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/equipment',
+    component: Layout,
+    redirect: '/equipment/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/equipment/index'),
+        name: 'Equipment',
+        meta: { title: 'Equipment', icon: 'equipment', noCache: true }
       }
     ]
   },
