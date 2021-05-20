@@ -1,48 +1,34 @@
 <template>
   <div class="block">
-    <el-timeline>
+    <el-timeline v-loading="listLoading">
       <el-timeline-item v-for="(record,index) of records" :key="index" :timestamp="record.created_time" placement="top">
         <el-card>
           <h4>{{ record.record }}</h4>
-          <p>{{ record.user.username }}</p>
+          <p> <svg-icon icon-class="modifier" /> {{ record.user.username }} </p>
         </el-card>
       </el-timeline-item>
     </el-timeline>
+    <pagination v-show="pagination.total_size>0" :total="pagination.total_size" :page.sync="listQuery.page" :size.sync="listQuery.size" @pagination="getRecord" />
   </div>
 </template>
 
 <script>
+
 import { getRecord } from '@/api/user'
+import Pagination from '@/components/Pagination'
 
 export default {
+  components: { Pagination },
   data() {
     return {
       records: null,
-      query: {
+      pagination: null,
+      listQuery: {
         page: 1,
-        size: 5
+        size: 20
       },
-      loading: false
-      // {
-      //   timestamp: '2019/4/20',
-      //   title: 'Update Github template',
-      //   content: 'PanJiaChen committed 2019/4/20 20:46'
-      // },
-      // {
-      //   timestamp: '2019/4/21',
-      //   title: 'Update Github template',
-      //   content: 'PanJiaChen committed 2019/4/21 20:46'
-      // },
-      // {
-      //   timestamp: '2019/4/22',
-      //   title: 'Build Template',
-      //   content: 'PanJiaChen committed 2019/4/22 20:46'
-      // },
-      // {
-      //   timestamp: '2019/4/23',
-      //   title: 'Release New Version',
-      //   content: 'PanJiaChen committed 2019/4/23 20:46'
-      // }
+      listLoading: false
+
     }
   },
   created() {
@@ -50,12 +36,14 @@ export default {
   },
   methods: {
     getRecord() {
-      this.loading = true
-      getRecord(this.query).then(response => {
+      this.listLoading = true
+      getRecord(this.listQuery).then(response => {
         this.records = response.data.list
-        this.loading = false
+        this.pagination = response.data.pagination
+        this.listLoading = false
       })
     }
+
   }
 }
 </script>
