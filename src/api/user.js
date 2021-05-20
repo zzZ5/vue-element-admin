@@ -24,11 +24,11 @@ export function update(data) {
   })
 }
 
-export function getRecord(query) {
+export function getRecord(listQuery) {
   return request({
     url: '/account/record/',
     method: 'get',
-    params: query
+    params: listQuery
   })
 }
 
