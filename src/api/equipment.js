@@ -31,7 +31,7 @@ export function createEquipment(data) {
   })
 }
 
-export function updateArticle(id, data) {
+export function updateEquipment(id, data) {
   return request({
     url: '/equipment/' + id + '/update/',
     method: 'post',
