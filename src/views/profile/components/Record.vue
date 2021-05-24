@@ -22,7 +22,9 @@ export default {
   data() {
     return {
       records: null,
-      pagination: null,
+      pagination: {
+        total_size: 0
+      },
       listQuery: {
         page: 1,
         size: 20
