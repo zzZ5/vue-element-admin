@@ -10,7 +10,7 @@ export function fetchList(query) {
 
 export function fetchEquipment(id) {
   return request({
-    url: '/vue-element-admin/' + id + '/info/',
+    url: '/equipment/' + id + '/detail/',
     method: 'get'
   })
 }
