@@ -36,8 +36,9 @@
       </el-table-column>
       <el-table-column label="Name" min-width="50px">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.name }}</span>
-          <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
+          <router-link :to="'/equipment/detail/'+row.id" class="link-type">
+            <span class="link-type">{{ row.name }}</span>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column label="Abbreviation" width="110px" align="center">
@@ -149,9 +150,6 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 
 const typeOptions = [
   { key: 'RE', display_name: 'Reactor' }
-  // { key: 'US', display_name: 'USA' },
-  // { key: 'JP', display_name: 'Japan' },
-  // { key: 'EU', display_name: 'Eurozone' }
 ]
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -310,7 +308,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           // tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateEquipment(tempData).then(() => {
+          updateEquipment(tempData.id, tempData).then(() => {
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
             this.dialogFormVisible = false
