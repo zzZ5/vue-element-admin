@@ -109,19 +109,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/equipment',
-    component: Layout,
-    redirect: '/equipment/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/equipment/index'),
-        name: 'Equipment',
-        meta: { title: 'Equipment', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
@@ -142,6 +129,69 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/list',
+  //   name: 'Example',
+  //   meta: {
+  //     title: 'Example',
+  //     icon: 'el-icon-s-help'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/example/create'),
+  //       name: 'CreateArticle',
+  //       meta: { title: 'Create Article', icon: 'edit' }
+  //     },
+  //     {
+  //       path: 'edit/:id(\\d+)',
+  //       component: () => import('@/views/example/edit'),
+  //       name: 'EditArticle',
+  //       meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/example/list'),
+  //       name: 'ArticleList',
+  //       meta: { title: 'Article List', icon: 'list' }
+  //     }
+  //   ]
+  // },
+  {
+    path: '/equipment',
+    component: Layout,
+    redirect: '/equipment/list',
+    name: 'Equipment',
+    meta: {
+      title: 'Equipment',
+      icon: 'component',
+      roles: ['admin', 'active']
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/equipment/list'),
+        name: 'EquipmentList',
+        meta: { title: 'Equipment List', icon: 'list', noCache: true, activeMenu: '/Equipment/list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/equipment/create'),
+        name: 'CreateEquipment',
+        meta: { title: 'Crete Equipment', icon: 'edit', noCache: true, activeMenu: '/equipment/create', roles: ['admin'] }
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/equipment/detail'),
+        name: 'EquipmentDetail',
+        meta: { title: 'Equipment Detail', noCache: true, activeMenu: '/equipment/list' },
+        hidden: true
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,
