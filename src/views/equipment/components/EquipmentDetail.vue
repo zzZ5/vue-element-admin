@@ -10,27 +10,38 @@
       <div class="createEquipment-main-container">
         <el-row>
           <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="name">
-              <MDinput v-model="postForm.name" :maxlength="100" name="name" required>
-                Name
-              </MDinput>
-            </el-form-item>
-
+            <el-row>
+              <el-col :span="10">
+                <el-form-item style="margin-bottom: 40px; margin-right: 40px" prop="name">
+                  <MDinput v-model="postForm.name" :maxlength="100" name="name" required>
+                    Name
+                  </MDinput>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4" />
+              <el-col :span="10">
+                <el-form-item style="margin-bottom: 40px;" prop="abbreviation">
+                  <MDinput v-model="postForm.abbreviation" :maxlength="100" name="abbreviation" required>
+                    Abbreviation
+                  </MDinput>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <div class="postInfo-container">
               <el-row>
-                <!-- <el-col :span="8">
-                  <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                <el-col :span="8">
+                  <el-form-item label-width="60px" label="Type:" class="postInfo-container-item">
+                    <el-select v-model="postForm.type">
+                      <el-option v-for="(item,index) in typeOptions" :key="item+index" :label="item" :value="item" />
                     </el-select>
                   </el-form-item>
-                </el-col> -->
+                </el-col>
 
-                <!-- <el-col :span="10">
-                  <el-form-item label-width="120px" label="Created Time:" class="postInfo-container-item">
-
+                <el-col :span="10">
+                  <el-form-item v-if="postForm.created_time" label-width="120px" label="Created Time:" class="postInfo-container-item">
+                    {{ postForm.created_time }}
                   </el-form-item>
-                </el-col> -->
+                </el-col>
               </el-row>
             </div>
           </el-col>
@@ -40,6 +51,15 @@
           <el-input v-model="postForm.descript" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
+        <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Sensor:" label-position="top">
+          <el-transfer
+            v-model="postForm.sensor"
+            style="text-align: left; display: inline-block"
+            :render-content="renderFunc"
+            :titles="['Outside', 'Inside']"
+            :data="sensorList"
+          />
+        </el-form-item>
       </div>
     </el-form>
   </div>
@@ -47,13 +67,14 @@
 
 <script>
 import { fetchEquipment } from '@/api/equipment'
+import { fetchList } from '@/api/sensor'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
 const defaultForm = {
   id: undefined,
   name: '', // 设备名
-  name_brief: '', // 设备简称
+  abbreviation: '', // 设备简称
   type: '', // 设备类型
   descript: '', // 设备描述
   sensor: [], // 设备传感器
@@ -73,23 +94,35 @@ export default {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
         this.$message({
-          message: rule.field + '为必传项',
+          message: rule.field + '为必填项',
           type: 'error'
         })
-        callback(new Error(rule.field + '为必传项'))
+        callback(new Error(rule.field + '为必填项'))
       } else {
         callback()
       }
     }
     return {
       postForm: Object.assign({}, defaultForm),
+      sensorList: [],
       loading: false,
-      userListOptions: [],
+      typeOptions: ['RE'],
       rules: {
         name: [{ validator: validateRequire }],
-        name_brief: [{ validator: validateRequire }],
+        abbreviation: [{ validator: validateRequire }],
         type: [{ validator: validateRequire }],
         descript: [{ validator: validateRequire }]
+      },
+      pagination: {
+        total_size: 0
+      },
+      listQuery: {
+        page: 1,
+        size: 20
+      },
+      listLoading: false,
+      renderFunc(h, option) {
+        return <span>{ option.id } - { option.name }</span>
       },
       tempRoute: {}
     }
@@ -103,6 +136,7 @@ export default {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
+      this.getSensorList()
     }
 
     // Why need to make a copy of this.$route here?
@@ -111,6 +145,15 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
+    getSensorList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.sensorList = response.data.list
+        this.pagination = response.data.pagination
+        this.listLoading = false
+      })
+    },
+
     fetchData(id) {
       fetchEquipment(id).then(response => {
         this.postForm = response.data

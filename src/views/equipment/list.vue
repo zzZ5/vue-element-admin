@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="Abbreviation" width="110px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.name_brief }}</span>
+          <span>{{ row.abbreviation }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
@@ -71,20 +71,14 @@
           <span>{{ row.created_time | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="80" class-name="small-padding fixed-width">
+      <el-table-column label="Actions" align="center" width="160" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-            Publish
+          <el-button size="mini">
+            Record
           </el-button>
-          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-            Draft
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-            Delete
-          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -92,29 +86,18 @@
     <pagination v-show="pagination.total_size>0" :total="pagination.total_size" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="Name" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item label="Abbreviation" prop="name_brief">
-          <el-input v-model="temp.name_brief" />
+        <el-form-item label="Abbreviation" prop="abbreviation">
+          <el-input v-model="temp.abbreviation" />
         </el-form-item>
         <el-form-item label="Type" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
             <el-option v-for="item in typeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="Date" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item> -->
-        <!-- <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item> -->
         <el-form-item label="Descript">
           <el-input v-model="temp.descript" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
         </el-form-item>
@@ -185,8 +168,7 @@ export default {
         page: 1,
         size: 20,
         search: undefined,
-        type: undefined,
-        ordering: '-created_time'
+        type: undefined
       },
       typeOptions,
       orderingOptions: [{ label: 'ID Ascending', key: 'id' }, { label: 'ID Descending', key: '-id' }, { label: 'Created Time Ascending', key: 'created_time' }, { label: 'Created Time Dscending', key: '-created_time' }],
@@ -194,7 +176,6 @@ export default {
       // showReviewer: false,
       temp: {
         name: '',
-        name_brief: '',
         abbreviation: 'RE',
         type: '',
         descript: ''
@@ -209,7 +190,7 @@ export default {
 
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
-        name_brief: [{ required: true, message: 'abbreviation is required', trigger: 'blur' }],
+        abbreviation: [{ required: true, message: 'abbreviation is required', trigger: 'blur' }],
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         descript: [{ required: true, message: 'descript is required', trigger: 'blur' }]
       },
@@ -341,7 +322,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['Id', 'Name', 'Abbreviation', 'Type', 'Descript', 'Created time']
-        const filterVal = ['id', 'name', 'name_brief', 'type', 'descript', 'created_time']
+        const filterVal = ['id', 'name', 'abbreviation', 'type', 'descript', 'created_time']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
