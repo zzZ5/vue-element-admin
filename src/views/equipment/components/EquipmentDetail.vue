@@ -289,6 +289,7 @@ export default {
             })
           } else {
             createEquipment(this.postForm).then((response) => {
+              this.postForm.id = response.data.id
               this.setTagsViewTitle()
               // set page title
               this.setPageTitle()
