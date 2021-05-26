@@ -34,7 +34,7 @@ export function createEquipment(data) {
 export function updateEquipment(id, data) {
   return request({
     url: '/equipment/' + id + '/update/',
-    method: 'post',
+    method: 'put',
     data
   })
 }

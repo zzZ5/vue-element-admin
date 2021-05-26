@@ -34,7 +34,7 @@ export function createSensor(data) {
 export function updateSensor(id, data) {
   return request({
     url: '/sensor/' + id + '/update/',
-    method: 'post',
+    method: 'put',
     data
   })
 }
