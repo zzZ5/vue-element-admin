@@ -1,8 +1,21 @@
 <template>
   <div class="createEquipment-container">
-    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-      <sticky :z-index="10" class-name="sub-navbar draft">
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+    <el-form
+      ref="postForm"
+      :model="postForm"
+      :rules="rules"
+      class="form-container"
+    >
+      <sticky
+        :z-index="10"
+        class-name="sub-navbar draft"
+      >
+        <el-button
+          v-loading="loading"
+          style="margin-left: 10px"
+          type="success"
+          @click="submitForm"
+        >
           Publish
         </el-button>
       </sticky>
@@ -12,16 +25,32 @@
           <el-col :span="24">
             <el-row>
               <el-col :span="10">
-                <el-form-item style="margin-bottom: 40px; margin-right: 40px" prop="name">
-                  <MDinput v-model="postForm.name" :maxlength="100" name="name" required>
+                <el-form-item
+                  style="margin-bottom: 40px; margin-right: 40px"
+                  prop="name"
+                >
+                  <MDinput
+                    v-model="postForm.name"
+                    :maxlength="100"
+                    name="name"
+                    required
+                  >
                     Name
                   </MDinput>
                 </el-form-item>
               </el-col>
               <el-col :span="4" />
               <el-col :span="10">
-                <el-form-item style="margin-bottom: 40px;" prop="abbreviation">
-                  <MDinput v-model="postForm.abbreviation" :maxlength="100" name="abbreviation" required>
+                <el-form-item
+                  style="margin-bottom: 40px"
+                  prop="abbreviation"
+                >
+                  <MDinput
+                    v-model="postForm.abbreviation"
+                    :maxlength="100"
+                    name="abbreviation"
+                    required
+                  >
                     Abbreviation
                   </MDinput>
                 </el-form-item>
@@ -30,15 +59,29 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="60px" label="Type:" class="postInfo-container-item">
+                  <el-form-item
+                    label-width="60px"
+                    label="Type:"
+                    class="postInfo-container-item"
+                  >
                     <el-select v-model="postForm.type">
-                      <el-option v-for="(item,index) in typeOptions" :key="item+index" :label="item" :value="item" />
+                      <el-option
+                        v-for="(item, index) in typeOptions"
+                        :key="item + index"
+                        :label="item"
+                        :value="item"
+                      />
                     </el-select>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item v-if="postForm.created_time" label-width="120px" label="Created Time:" class="postInfo-container-item">
+                  <el-form-item
+                    v-if="postForm.created_time"
+                    label-width="120px"
+                    label="Created Time:"
+                    class="postInfo-container-item"
+                  >
                     {{ postForm.created_time }}
                   </el-form-item>
                 </el-col>
@@ -47,18 +90,54 @@
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Descripy:">
-          <el-input v-model="postForm.descript" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
+        <el-form-item
+          style="margin-bottom: 40px"
+          label-width="70px"
+          label="Descripy:"
+        >
+          <el-input
+            v-model="postForm.descript"
+            :rows="1"
+            type="textarea"
+            class="article-textarea"
+            autosize
+            placeholder="Please enter the content"
+          />
+          <span
+            v-show="contentShortLength"
+            class="word-counter"
+          >{{ contentShortLength }}words</span>
         </el-form-item>
-        <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Sensor:" label-position="top">
+        <el-form-item
+          style="margin-bottom: 40px"
+          label-width="70px"
+          label="Sensor:"
+          label-position="top"
+        >
           <el-transfer
             v-model="postForm.sensor"
+            v-loading="listLoading"
+            :props="{
+              key: 'id',
+              label: 'name',
+            }"
             style="text-align: left; display: inline-block"
-            :render-content="renderFunc"
-            :titles="['Outside', 'Inside']"
+            :titles="['Available', 'Selected']"
             :data="sensorList"
-          />
+            @change="transferChange"
+          >
+            <el-pagination
+              v-show="pagination.total_size > 0"
+              slot="left-footer"
+              :total="pagination.total_size"
+              :current-page.sync="listQuery.page"
+              :page-size.sync="listQuery.size"
+              small
+              layout="prev, pager, next"
+              align="right"
+              @current-change="getSensorList"
+            />
+          </el-transfer>
         </el-form-item>
       </div>
     </el-form>
@@ -66,7 +145,7 @@
 </template>
 
 <script>
-import { fetchEquipment } from '@/api/equipment'
+import { fetchEquipment, updateEquipment, createEquipment } from '@/api/equipment'
 import { fetchList } from '@/api/sensor'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
@@ -105,6 +184,7 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       sensorList: [],
+      selectedSensor: [],
       loading: false,
       typeOptions: ['RE'],
       rules: {
@@ -121,9 +201,6 @@ export default {
         size: 20
       },
       listLoading: false,
-      renderFunc(h, option) {
-        return <span>{ option.id } - { option.name }</span>
-      },
       tempRoute: {}
     }
   },
@@ -136,38 +213,60 @@ export default {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
-      this.getSensorList()
     }
-
+    this.getSensorList()
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
+    unique(arr) {
+      // 根据唯一标识id来对数组进行过滤
+      const res = new Map()
+      return arr.filter((arr) => !res.has(arr.id) && res.set(arr.id, 1))
+    },
+
     getSensorList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchList(this.listQuery).then((response) => {
         this.sensorList = response.data.list
+        this.sensorList = [...this.sensorList, ...this.selectedSensor]
+        this.sensorList = this.unique(this.sensorList)
         this.pagination = response.data.pagination
         this.listLoading = false
       })
     },
+    transferChange(current, direction, move) {
+      this.selectedSensor = this.sensorList.filter(function(val) {
+        return current.includes(val.id)
+      })
+    },
 
     fetchData(id) {
-      fetchEquipment(id).then(response => {
-        this.postForm = response.data
-        // set tagsview title
-        this.setTagsViewTitle()
-        // set page title
-        this.setPageTitle()
-      }).catch(err => {
-        console.log(err)
-      })
+      fetchEquipment(id)
+        .then((response) => {
+          this.postForm = response.data
+          const temp = []
+          for (const sensor of response.data.sensor) {
+            this.selectedSensor.push(sensor)
+            temp.push(sensor.id)
+          }
+          this.postForm.sensor = temp
+          // set tagsview title
+          this.setTagsViewTitle()
+          // set page title
+          this.setPageTitle()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     setTagsViewTitle() {
       const title = 'Edit Equipment'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title}-${this.postForm.id}`
+      })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
@@ -176,16 +275,32 @@ export default {
     },
     submitForm() {
       console.log(this.postForm)
-      this.$refs.postForm.validate(valid => {
+      this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
+          if (this.isEdit) {
+            updateEquipment(this.postForm.id, this.postForm).then((response) => {
+              this.$notify({
+                title: 'Success',
+                message: 'Updated successfully',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            createEquipment(this.postForm).then((response) => {
+              this.setTagsViewTitle()
+              // set page title
+              this.setPageTitle()
+              this.isEdit = true
+              this.$notify({
+                title: 'Success',
+                message: 'Created successfully',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }
           this.loading = false
         } else {
           console.log('error submit!!')
@@ -193,12 +308,6 @@ export default {
         }
       })
     }
-    // getSensorList(query) {
-    //   searchUser(query).then(response => {
-    //     if (!response.data.items) return
-    //     this.userListOptions = response.data.items.map(v => v.name)
-    //   })
-    // }
   }
 }
 </script>
