@@ -66,7 +66,7 @@
       style="width: 100%"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" align="center" width="80">
+      <el-table-column label="ID" sortable="custom" prop="id" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{ row }">
           <span>{{ row.id }}</span>
         </template>
@@ -93,7 +93,7 @@
           <span> {{ row.descript }} </span>
         </template>
       </el-table-column>
-      <el-table-column label="Created time" width="150px" align="center">
+      <el-table-column label="Created time" sortable="custom" prop="created_time" width="150px" align="center" :class-name="getSortClass('created_time')">
         <template slot-scope="{ row }">
           <span>{{ row.created_time | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -121,7 +121,7 @@
       @pagination="getList"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="Update" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -163,7 +163,7 @@
         <el-button @click="dialogFormVisible = false"> Cancel </el-button>
         <el-button
           type="primary"
-          @click="dialogStatus === 'create' ? createData() : updateData()"
+          @click="updateData"
         >
           Confirm
         </el-button>
@@ -180,7 +180,6 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 
 const typeOptions = [{ key: 'RE', display_name: 'Reactor' }]
 
-// arr to obj, such as { CN : "China", US : "USA" }
 const typeKeyValue = typeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
   return acc
@@ -205,7 +204,8 @@ export default {
         page: 1,
         size: 20,
         search: undefined,
-        type: undefined
+        type: undefined,
+        ordering: '-created_time'
       },
       typeOptions,
       orderingOptions: [
@@ -223,13 +223,6 @@ export default {
         descript: ''
       },
       dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: 'Edit',
-        create: 'Create'
-      },
-      // dialogPvVisible: false,
-
       rules: {
         name: [
           { required: true, message: 'name is required', trigger: 'blur' }
@@ -273,21 +266,20 @@ export default {
     },
     sortChange(data) {
       const { prop, order } = data
-      if (prop === 'id' || prop === 'crated_time') {
+      if (prop === 'id' || prop === 'created_time') {
         this.sortByProp(prop, order)
       }
     },
     sortByProp(prop, order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = prop
+      if (order === 'descending') {
+        this.listQuery.ordering = '-' + prop
       } else {
-        this.listQuery.sort = '-' + prop
+        this.listQuery.ordering = prop
       }
       this.handleFilter()
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
+      this.temp = Object.assign({}, row)
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -349,6 +341,18 @@ export default {
           }
         })
       )
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.ordering
+      if (sort === `${key}`) {
+        if (sort === `-${key}`) {
+          return 'descending'
+        } else {
+          return 'ascending'
+        }
+      } else {
+        return ''
+      }
     }
   }
 }
