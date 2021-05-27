@@ -175,19 +175,51 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/equipment/list'),
         name: 'EquipmentList',
-        meta: { title: 'Equipment List', icon: 'list', noCache: true, activeMenu: '/Equipment/list' }
+        meta: { title: 'Equipment List', icon: 'equipment', noCache: true, activeMenu: '/Equipment/list' }
       },
       {
         path: 'create',
         component: () => import('@/views/equipment/create'),
         name: 'CreateEquipment',
-        meta: { title: 'Crete Equipment', icon: 'edit', noCache: true, activeMenu: '/equipment/create', roles: ['admin'] }
+        meta: { title: 'Create Equipment', icon: 'edit', noCache: true, activeMenu: '/equipment/create', roles: ['admin'] }
       },
       {
         path: 'detail/:id',
         component: () => import('@/views/equipment/detail'),
         name: 'EquipmentDetail',
         meta: { title: 'Equipment Detail', noCache: true, activeMenu: '/equipment/list' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/experiment',
+    component: Layout,
+    redirect: '/experiment/list',
+    name: 'Experiment',
+    meta: {
+      title: 'Experiment',
+      icon: 'experiment',
+      roles: ['admin', 'active']
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/experiment/list'),
+        name: 'ExperimentList',
+        meta: { title: 'Experiment List', icon: 'list', noCache: true, activeMenu: '/Experiment/list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/experiment/create'),
+        name: 'CreateExperiment',
+        meta: { title: 'Create Experiment', icon: 'edit', noCache: true, activeMenu: '/Experiment/create', roles: ['admin', 'active'] }
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/experiment/detail'),
+        name: 'ExperimentDetail',
+        meta: { title: 'Experiment Detail', noCache: true, activeMenu: '/experiment/list' },
         hidden: true
       }
     ]
