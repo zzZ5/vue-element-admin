@@ -16,6 +16,14 @@ export function getInfo(token) {
   })
 }
 
+export function fetchList(query) {
+  return request({
+    url: '/account/list/',
+    method: 'get',
+    params: query
+  })
+}
+
 export function update(data) {
   return request({
     url: '/account/update/',
