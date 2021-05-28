@@ -24,7 +24,7 @@
         <el-row>
           <el-col :span="24">
             <el-row>
-              <el-col :span="10">
+              <el-col :span="12">
                 <el-form-item
                   style="margin-bottom: 40px; margin-right: 40px"
                   prop="name"
@@ -39,8 +39,7 @@
                   </MDinput>
                 </el-form-item>
               </el-col>
-              <el-col :span="4" />
-              <el-col :span="10">
+              <el-col :span="12">
                 <el-form-item
                   style="margin-bottom: 40px"
                   prop="abbreviation"
@@ -93,7 +92,7 @@
         <el-form-item
           style="margin-bottom: 40px"
           label-width="70px"
-          label="Descripy:"
+          label="Descript:"
         >
           <el-input
             v-model="postForm.descript"
