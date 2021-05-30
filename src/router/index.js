@@ -193,6 +193,38 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/sensor',
+    component: Layout,
+    redirect: '/sensor/list',
+    name: 'Sensor',
+    meta: {
+      title: 'Sensor',
+      icon: 'sensor',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/sensor/list'),
+        name: 'SensorList',
+        meta: { title: 'Sensor List', icon: 'list', noCache: true, activeMenu: '/Sensor/list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/sensor/create'),
+        name: 'CreateSensor',
+        meta: { title: 'Create Sensor', icon: 'edit', noCache: true, activeMenu: '/sensor/create' }
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/sensor/detail'),
+        name: 'SensorDetail',
+        meta: { title: 'Sensor Detail', noCache: true, activeMenu: '/sensor/list' },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/experiment',
     component: Layout,
     redirect: '/experiment/list',
@@ -214,6 +246,12 @@ export const asyncRoutes = [
         component: () => import('@/views/experiment/create'),
         name: 'CreateExperiment',
         meta: { title: 'Create Experiment', icon: 'edit', noCache: true, activeMenu: '/Experiment/create', roles: ['admin', 'active'] }
+      },
+      {
+        path: 'mine',
+        component: () => import('@/views/experiment/mine/index'),
+        name: 'MyExperiment',
+        meta: { title: 'My Experiment', icon: 'my-experiment', noCache: true, activeMenu: '/Experiment/mine', roles: ['admin', 'active'] }
       },
       {
         path: 'detail/:id',
