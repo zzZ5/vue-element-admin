@@ -8,12 +8,13 @@
     >
       <sticky :z-index="10" class-name="sub-navbar draft">
         <el-button
+          v-model="status"
           v-loading="loading.publish"
           style="margin-left: 10px"
           type="success"
           @click="submitForm"
         >
-          Publish
+          {{ status }}
         </el-button>
       </sticky>
 
@@ -204,7 +205,7 @@ const defaultForm = {
   end_time: '',
   user: [],
   owner: '',
-  status: ''
+  status: '0'
 }
 
 export default {
@@ -229,9 +230,11 @@ export default {
       }
     }
     return {
+      status: 'Create',
       postForm: Object.assign({}, defaultForm),
       rules: {
         name: [{ validator: validateRequire }],
+        site: [{ validator: validateRequire }],
         descript: [{ validator: validateRequire }]
       },
       tempRoute: {},
@@ -276,6 +279,7 @@ export default {
   created() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
+      this.status = 'Edit'
       this.fetchData(id)
     }
     this.getUserList()
@@ -365,7 +369,7 @@ export default {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading.publish = true
-          if (this.isEdit) {
+          if (this.status === 'Edit') {
             updateExperiment(this.postForm.id, this.postForm).then(
               (response) => {
                 this.$notify({
@@ -376,13 +380,14 @@ export default {
                 })
               }
             )
-          } else {
+          } else if (this.status === 'create') {
+            this.postForm.owner = this.$store.getters.user_id
             createExperiment(this.postForm).then((response) => {
               this.postForm.id = response.data.id
               this.setTagsViewTitle()
               // set page title
               this.setPageTitle()
-              this.isEdit = true
+              this.status = 'Edit'
               this.$notify({
                 title: 'Success',
                 message: 'Created successfully',
