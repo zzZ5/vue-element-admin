@@ -11,12 +11,13 @@
         class-name="sub-navbar draft"
       >
         <el-button
+          v-model="status"
           v-loading="loading"
           style="margin-left: 10px"
           type="success"
           @click="submitForm"
         >
-          Publish
+          {{ status }}
         </el-button>
       </sticky>
 
@@ -181,6 +182,7 @@ export default {
       }
     }
     return {
+      status: 'Create',
       postForm: Object.assign({}, defaultForm),
       sensorList: [],
       selectedSensor: [],
@@ -212,6 +214,7 @@ export default {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
+      this.status = 'Edit'
     }
     this.getSensorList()
     // Why need to make a copy of this.$route here?
@@ -277,7 +280,7 @@ export default {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          if (this.isEdit) {
+          if (this.status === 'Edit') {
             updateEquipment(this.postForm.id, this.postForm).then((response) => {
               this.$notify({
                 title: 'Success',
@@ -286,13 +289,13 @@ export default {
                 duration: 2000
               })
             })
-          } else {
+          } else if (this.status === 'Create') {
             createEquipment(this.postForm).then((response) => {
               this.postForm.id = response.data.id
               this.setTagsViewTitle()
               // set page title
               this.setPageTitle()
-              this.isEdit = true
+              this.status = 'Edit'
               this.$notify({
                 title: 'Success',
                 message: 'Created successfully',
