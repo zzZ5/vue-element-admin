@@ -73,7 +73,7 @@
       </el-table-column>
       <el-table-column label="Name" min-width="50px">
         <template slot-scope="{ row }">
-          <router-link :to="'/equipment/detail/' + row.id" class="link-type">
+          <router-link :to="'/equipment/edit/' + row.id" class="link-type">
             <span class="link-type">{{ row.name }}</span>
           </router-link>
         </template>
@@ -121,7 +121,7 @@
       @pagination="getList"
     />
 
-    <el-dialog :title="Update" :visible.sync="dialogFormVisible">
+    <el-dialog title="Edit" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
         :rules="rules"

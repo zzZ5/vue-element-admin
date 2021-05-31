@@ -1,5 +1,5 @@
 <template>
-  <Equipment-detail :is-edit="true" />
+  <equipment-detail :is-edit="true" />
 </template>
 
 <script>

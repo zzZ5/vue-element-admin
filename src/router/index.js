@@ -184,10 +184,10 @@ export const asyncRoutes = [
         meta: { title: 'Create Equipment', icon: 'edit', noCache: true, activeMenu: '/equipment/create', roles: ['admin'] }
       },
       {
-        path: 'detail/:id',
-        component: () => import('@/views/equipment/detail'),
-        name: 'EquipmentDetail',
-        meta: { title: 'Equipment Detail', noCache: true, activeMenu: '/equipment/list' },
+        path: 'edit/:id',
+        component: () => import('@/views/equipment/edit'),
+        name: 'EquipmentEdit',
+        meta: { title: 'Equipment Edit', noCache: true, activeMenu: '/equipment/list' },
         hidden: true
       }
     ]
@@ -216,10 +216,10 @@ export const asyncRoutes = [
         meta: { title: 'Create Sensor', icon: 'edit', noCache: true, activeMenu: '/sensor/create' }
       },
       {
-        path: 'detail/:id',
-        component: () => import('@/views/sensor/detail'),
-        name: 'SensorDetail',
-        meta: { title: 'Sensor Detail', noCache: true, activeMenu: '/sensor/list' },
+        path: 'edit/:id',
+        component: () => import('@/views/sensor/edit'),
+        name: 'SensorEdit',
+        meta: { title: 'Sensor Edit', noCache: true, activeMenu: '/sensor/list' },
         hidden: true
       }
     ]
@@ -254,10 +254,10 @@ export const asyncRoutes = [
         meta: { title: 'My Experiment', icon: 'my-experiment', noCache: true, activeMenu: '/Experiment/mine', roles: ['admin', 'active'] }
       },
       {
-        path: 'detail/:id',
-        component: () => import('@/views/experiment/detail'),
-        name: 'ExperimentDetail',
-        meta: { title: 'Experiment Detail', noCache: true, activeMenu: '/experiment/list' },
+        path: 'edit/:id',
+        component: () => import('@/views/experiment/edit'),
+        name: 'ExperimentEdit',
+        meta: { title: 'Experiment Edit', noCache: true, activeMenu: '/experiment/list' },
         hidden: true
       }
     ]

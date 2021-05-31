@@ -57,7 +57,6 @@
     </div>
 
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
@@ -74,7 +73,7 @@
 
       <el-table-column label="Name" min-width="50px">
         <template slot-scope="{ row }">
-          <router-link :to="'/experiment/detail/' + row.id" class="link-type">
+          <router-link :to="'/experiment/edit/' + row.id" class="link-type">
             <span class="link-type">{{ row.name }}</span>
           </router-link>
         </template>
@@ -171,7 +170,6 @@ export default {
   },
   data() {
     return {
-      tableKey: 0,
       list: null,
       pagination: { total_size: 0 },
       listLoading: true,
