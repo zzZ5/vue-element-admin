@@ -1,26 +1,29 @@
 <template>
   <div class="createSensor-container">
+    <sticky :z-index="10" class-name="sub-navbar draft">
+      <el-button
+        style="margin-left: 10px"
+        @click="editForm"
+      >
+        {{ status }}
+      </el-button>
+      <el-button
+        v-loading="loading"
+        :disabled="isDisabled"
+        style="margin-left: 10px"
+        type="success"
+        @click="submitForm"
+      >
+        Submit
+      </el-button>
+    </sticky>
     <el-form
       ref="postForm"
+      :disabled="isDisabled"
       :model="postForm"
       :rules="rules"
       class="form-container"
     >
-      <sticky
-        :z-index="10"
-        class-name="sub-navbar draft"
-      >
-        <el-button
-          v-model="status"
-          v-loading="loading"
-          style="margin-left: 10px"
-          type="success"
-          @click="submitForm"
-        >
-          {{ status }}
-        </el-button>
-      </sticky>
-
       <div class="createSensor-main-container">
         <el-row>
           <el-col :span="24">
@@ -35,6 +38,7 @@
                     :maxlength="100"
                     name="name"
                     required
+                    :disabled="isDisabled"
                   >
                     Name
                   </MDinput>
@@ -50,6 +54,7 @@
                     :maxlength="100"
                     name="abbreviation"
                     required
+                    :disabled="isDisabled"
                   >
                     Abbreviation
                   </MDinput>
@@ -150,7 +155,8 @@ export default {
       }
     }
     return {
-      status: 'Create',
+      isDisabled: true,
+      status: 'View',
       postForm: Object.assign({}, defaultForm),
       loading: false,
       typeOptions: ['T', 'H'],
@@ -181,6 +187,9 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
       this.status = 'Edit'
+    } else {
+      this.status = 'View'
+      this.isDisabled = false
     }
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -212,12 +221,22 @@ export default {
       const title = 'Edit Sensor'
       document.title = `${title} - ${this.postForm.id}`
     },
+    editForm() {
+      if (this.status === 'Edit') {
+        this.status = 'View'
+        this.isDisabled = false
+      } else {
+        this.status = 'Edit'
+        this.isDisabled = true
+      }
+    },
     submitForm() {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          if (this.status === 'Edit') {
+          if (this.isEdit) {
             updateSensor(this.postForm.id, this.postForm).then((response) => {
+              this.editForm()
               this.$notify({
                 title: 'Success',
                 message: 'Updated successfully',
@@ -225,13 +244,9 @@ export default {
                 duration: 2000
               })
             })
-          } else if (this.status === 'Create') {
+          } else {
             createSensor(this.postForm).then((response) => {
-              this.postForm.id = response.data.id
-              this.setTagsViewTitle()
-              // set page title
-              this.setPageTitle()
-              this.status = 'Edit'
+              this.editForm()
               this.$notify({
                 title: 'Success',
                 message: 'Created successfully',

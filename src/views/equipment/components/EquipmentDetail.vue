@@ -1,26 +1,29 @@
 <template>
   <div class="createEquipment-container">
+    <sticky :z-index="10" class-name="sub-navbar draft">
+      <el-button
+        style="margin-left: 10px"
+        @click="editForm"
+      >
+        {{ status }}
+      </el-button>
+      <el-button
+        v-loading="loading"
+        :disabled="isDisabled"
+        style="margin-left: 10px"
+        type="success"
+        @click="submitForm"
+      >
+        Submit
+      </el-button>
+    </sticky>
     <el-form
       ref="postForm"
+      :disabled="isDisabled"
       :model="postForm"
       :rules="rules"
       class="form-container"
     >
-      <sticky
-        :z-index="10"
-        class-name="sub-navbar draft"
-      >
-        <el-button
-          v-model="status"
-          v-loading="loading"
-          style="margin-left: 10px"
-          type="success"
-          @click="submitForm"
-        >
-          {{ status }}
-        </el-button>
-      </sticky>
-
       <div class="createEquipment-main-container">
         <el-row>
           <el-col :span="24">
@@ -32,6 +35,7 @@
                 >
                   <MDinput
                     v-model="postForm.name"
+                    :disabled="isDisabled"
                     :maxlength="100"
                     name="name"
                     required
@@ -47,6 +51,7 @@
                 >
                   <MDinput
                     v-model="postForm.abbreviation"
+                    :disabled="isDisabled"
                     :maxlength="100"
                     name="abbreviation"
                     required
@@ -182,7 +187,8 @@ export default {
       }
     }
     return {
-      status: 'Create',
+      isDisabled: true,
+      status: 'View',
       postForm: Object.assign({}, defaultForm),
       sensorList: [],
       selectedSensor: [],
@@ -215,6 +221,9 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
       this.status = 'Edit'
+    } else {
+      this.status = 'View'
+      this.isDisabled = false
     }
     this.getSensorList()
     // Why need to make a copy of this.$route here?
@@ -275,13 +284,23 @@ export default {
       const title = 'Edit Equipment'
       document.title = `${title} - ${this.postForm.id}`
     },
+    editForm() {
+      if (this.status === 'Edit') {
+        this.status = 'View'
+        this.isDisabled = false
+      } else {
+        this.status = 'Edit'
+        this.isDisabled = true
+      }
+    },
     submitForm() {
       console.log(this.postForm)
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          if (this.status === 'Edit') {
+          if (this.isEdit) {
             updateEquipment(this.postForm.id, this.postForm).then((response) => {
+              this.editForm()
               this.$notify({
                 title: 'Success',
                 message: 'Updated successfully',
@@ -289,13 +308,9 @@ export default {
                 duration: 2000
               })
             })
-          } else if (this.status === 'Create') {
+          } else {
             createEquipment(this.postForm).then((response) => {
-              this.postForm.id = response.data.id
-              this.setTagsViewTitle()
-              // set page title
-              this.setPageTitle()
-              this.status = 'Edit'
+              this.editForm()
               this.$notify({
                 title: 'Success',
                 message: 'Created successfully',
