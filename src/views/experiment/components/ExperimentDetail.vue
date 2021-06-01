@@ -1,22 +1,29 @@
 <template>
   <div class="createExperiment-container">
+    <sticky :z-index="10" class-name="sub-navbar draft">
+      <el-button
+        style="margin-left: 10px"
+        @click="editForm"
+      >
+        {{ status }}
+      </el-button>
+      <el-button
+        v-loading="loading.publish"
+        :disabled="isDisabled"
+        style="margin-left: 10px"
+        type="success"
+        @click="submitForm"
+      >
+        Submit
+      </el-button>
+    </sticky>
     <el-form
       ref="postForm"
+      :disabled="isDisabled"
       :model="postForm"
       :rules="rules"
       class="form-container"
     >
-      <sticky :z-index="10" class-name="sub-navbar draft">
-        <el-button
-          v-model="status"
-          v-loading="loading.publish"
-          style="margin-left: 10px"
-          type="success"
-          @click="submitForm"
-        >
-          {{ status }}
-        </el-button>
-      </sticky>
 
       <div class="createExperiment-main-container">
         <el-row>
@@ -28,6 +35,7 @@
                   :maxlength="100"
                   name="name"
                   required
+                  :disabled="isDisabled"
                 >
                   Name
                 </MDinput>
@@ -43,6 +51,7 @@
                   :maxlength="100"
                   name="site"
                   required
+                  :disabled="isDisabled"
                 >
                   Site
                 </MDinput>
@@ -230,7 +239,8 @@ export default {
       }
     }
     return {
-      status: 'Create',
+      isDisabled: true,
+      status: 'View',
       postForm: Object.assign({}, defaultForm),
       rules: {
         name: [{ validator: validateRequire }],
@@ -281,6 +291,9 @@ export default {
       const id = this.$route.params && this.$route.params.id
       this.status = 'Edit'
       this.fetchData(id)
+    } else {
+      this.status = 'View'
+      this.isDisabled = false
     }
     this.getUserList()
     this.getEquipmentList()
@@ -365,13 +378,23 @@ export default {
       const title = 'Edit Experiment'
       document.title = `${title} - ${this.postForm.id}`
     },
+    editForm() {
+      if (this.status === 'Edit') {
+        this.status = 'View'
+        this.isDisabled = false
+      } else {
+        this.status = 'Edit'
+        this.isDisabled = true
+      }
+    },
     submitForm() {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading.publish = true
-          if (this.status === 'Edit') {
+          if (this.isEdit) {
             updateExperiment(this.postForm.id, this.postForm).then(
               (response) => {
+                this.editForm()
                 this.$notify({
                   title: 'Success',
                   message: 'Updated successfully',
@@ -380,14 +403,10 @@ export default {
                 })
               }
             )
-          } else if (this.status === 'create') {
+          } else {
             this.postForm.owner = this.$store.getters.user_id
             createExperiment(this.postForm).then((response) => {
-              this.postForm.id = response.data.id
-              this.setTagsViewTitle()
-              // set page title
-              this.setPageTitle()
-              this.status = 'Edit'
+              this.editForm()
               this.$notify({
                 title: 'Success',
                 message: 'Created successfully',
