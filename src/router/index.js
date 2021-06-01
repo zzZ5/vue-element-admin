@@ -249,7 +249,7 @@ export const asyncRoutes = [
       },
       {
         path: 'mine',
-        component: () => import('@/views/experiment/mine/index'),
+        component: () => import('@/views/experiment/mine'),
         name: 'MyExperiment',
         meta: { title: 'My Experiment', icon: 'my-experiment', noCache: true, activeMenu: '/Experiment/mine', roles: ['admin', 'active'] }
       },
