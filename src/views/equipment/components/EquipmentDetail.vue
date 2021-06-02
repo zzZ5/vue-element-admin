@@ -297,6 +297,7 @@ export default {
       console.log(this.postForm)
       this.$refs.postForm.validate((valid) => {
         if (valid) {
+          this.isDisabled = true
           this.loading = true
           if (this.isEdit) {
             updateEquipment(this.postForm.id, this.postForm).then((response) => {

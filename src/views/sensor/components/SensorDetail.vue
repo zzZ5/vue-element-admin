@@ -233,6 +233,7 @@ export default {
     submitForm() {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
+          this.isDisabled = true
           this.loading = true
           if (this.isEdit) {
             updateSensor(this.postForm.id, this.postForm).then((response) => {
