@@ -4,7 +4,7 @@
       <el-input
         v-model="listQuery.search"
         placeholder="Search"
-        style="width: 150px"
+        style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
@@ -13,7 +13,7 @@
         placeholder="Status"
         clearable
         class="filter-item"
-        style="width: 120px"
+        style="width: 130px"
       >
         <el-option
           v-for="item in statusOptions"
@@ -24,7 +24,7 @@
       </el-select>
       <el-select
         v-model="listQuery.ordering"
-        style="width: 220px"
+        style="width: 230px"
         class="filter-item"
         @change="handleFilter"
       >
@@ -84,19 +84,19 @@
           <span>{{ row.site }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="showAll" label="Descript" min-width="120px">
+      <el-table-column label="Descript" min-width="120px">
         <template slot-scope="{ row }">
           <span> {{ row.descript }} </span>
         </template>
       </el-table-column>
 
-      <el-table-column v-if="showAll" label="Begin time" width="150px" align="center">
+      <el-table-column label="Begin time" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.begin_time | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column v-if="showAll" label="End time" width="150px" align="center">
+      <el-table-column label="End time" width="150px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.end_time | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
@@ -179,8 +179,8 @@ export default {
       default: false
     },
     userId: {
-      type: String,
-      default: '0'
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -211,11 +211,9 @@ export default {
   created() {
     if (this.owner) {
       this.listQuery.owner = this.userId
-      this.showAll = false
     }
     if (this.user) {
       this.listQuery.user = this.userId
-      this.showAll = false
     }
     this.getList()
   },

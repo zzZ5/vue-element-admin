@@ -7,6 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
+import experimentRouter from './modules/experiment'
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 // import tableRouter from './modules/table'
@@ -224,44 +225,45 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/experiment',
-    component: Layout,
-    redirect: '/experiment/list',
-    name: 'Experiment',
-    meta: {
-      title: 'Experiment',
-      icon: 'experiment',
-      roles: ['admin', 'active']
-    },
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/views/experiment/list'),
-        name: 'ExperimentList',
-        meta: { title: 'Experiment List', icon: 'list', noCache: true, activeMenu: '/Experiment/list' }
-      },
-      {
-        path: 'create',
-        component: () => import('@/views/experiment/create'),
-        name: 'CreateExperiment',
-        meta: { title: 'Create Experiment', icon: 'edit', noCache: true, activeMenu: '/Experiment/create', roles: ['admin', 'active'] }
-      },
-      {
-        path: 'mine',
-        component: () => import('@/views/experiment/mine'),
-        name: 'MyExperiment',
-        meta: { title: 'My Experiment', icon: 'my-experiment', noCache: true, activeMenu: '/Experiment/mine', roles: ['admin', 'active'] }
-      },
-      {
-        path: 'edit/:id',
-        component: () => import('@/views/experiment/edit'),
-        name: 'ExperimentEdit',
-        meta: { title: 'Experiment Edit', noCache: true, activeMenu: '/experiment/list' },
-        hidden: true
-      }
-    ]
-  },
+  experimentRouter,
+  // {
+  //   path: '/experiment',
+  //   component: Layout,
+  //   redirect: '/experiment/list',
+  //   name: 'Experiment',
+  //   meta: {
+  //     title: 'Experiment',
+  //     icon: 'experiment',
+  //     roles: ['admin', 'active']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/experiment/list'),
+  //       name: 'ExperimentList',
+  //       meta: { title: 'Experiment List', icon: 'list', noCache: true, activeMenu: '/Experiment/list' }
+  //     },
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/experiment/create'),
+  //       name: 'CreateExperiment',
+  //       meta: { title: 'Create Experiment', icon: 'edit', noCache: true, activeMenu: '/Experiment/create', roles: ['admin', 'active'] }
+  //     },
+  //     {
+  //       path: 'mine',
+  //       component: () => import('@/views/experiment/mine'),
+  //       name: 'MyExperiment',
+  //       meta: { title: 'My Experiment', icon: 'my-experiment', noCache: true, activeMenu: '/Experiment/mine', roles: ['admin', 'active'] }
+  //     },
+  //     {
+  //       path: 'edit/:id',
+  //       component: () => import('@/views/experiment/edit'),
+  //       name: 'ExperimentEdit',
+  //       meta: { title: 'Experiment Edit', noCache: true, activeMenu: '/experiment/list' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/permission',
   //   component: Layout,
