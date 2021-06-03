@@ -9,7 +9,6 @@
       </el-button>
       <el-button
         :loading="loading"
-        :disabled="isDisabled"
         style="margin-left: 10px"
         type="success"
         @click="submitForm"
