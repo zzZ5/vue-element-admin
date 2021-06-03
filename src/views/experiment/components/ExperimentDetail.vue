@@ -390,6 +390,7 @@ export default {
     submitForm() {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
+          this.isDisabled = true
           this.loading.publish = true
           if (this.isEdit) {
             updateExperiment(this.postForm.id, this.postForm).then(
