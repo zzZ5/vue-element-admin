@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      // title: 'Compost Lab',
+      title: 'Compost Lab',
       logo: 'http://118.25.108.254/static/polls/img/nav.svg'
     }
   }
