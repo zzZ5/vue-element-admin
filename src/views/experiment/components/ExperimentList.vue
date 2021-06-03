@@ -38,6 +38,7 @@
       <el-button
         v-waves
         class="filter-item"
+        style="margin-left: 10px"
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
@@ -45,9 +46,19 @@
         Search
       </el-button>
       <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+      >
+        Add
+      </el-button>
+      <el-button
         v-waves
         :loading="downloadLoading"
         class="filter-item"
+        style="margin-left: 10px"
         type="primary"
         icon="el-ic on-download"
         @click="handleDownload"
@@ -65,7 +76,14 @@
       style="width: 100%"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" sortable="custom" prop="id" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column
+        label="ID"
+        sortable="custom"
+        prop="id"
+        align="center"
+        width="80"
+        :class-name="getSortClass('id')"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.id }}</span>
         </template>
@@ -109,26 +127,45 @@
       </el-table-column>
 
       <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-tag :type="row.status | statusTagFilter">
             {{ row.status | statusFilter }}
           </el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="Created time" sortable="custom" prop="created_time" width="150px" align="center" :class-name="getSortClass('created_time')">
+      <el-table-column
+        label="Created time"
+        sortable="custom"
+        prop="created_time"
+        width="150px"
+        align="center"
+        :class-name="getSortClass('created_time')"
+      >
         <template slot-scope="{ row }">
           <span>{{ row.created_time | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="Actions" align="center" width="150" class-name="small-padding fixed-width">
-        <el-button type="primary" size="mini">
-          Edit
-        </el-button>
-        <el-button size="mini" type="success">
-          Detail
-        </el-button>
+      <el-table-column
+        label="Actions"
+        align="center"
+        width="150"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{ row }">
+          <router-link
+            :to="'/experiment/edit/' + row.id"
+            class="link-type"
+            style="padding-right: 10px"
+          >
+            <el-button size="mini"> Edit </el-button>
+          </router-link>
+
+          <router-link :to="'/experiment/detail/' + row.id" class="link-type">
+            <el-button size="mini" type="success"> Detail </el-button>
+          </router-link>
+        </template>
       </el-table-column>
 
       <pagination
@@ -168,9 +205,9 @@ export default {
     statusTagFilter(status) {
       const statusMap = {
         '-1': 'danger',
-        '0': 'warning',
-        '1': 'success',
-        '2': 'info'
+        0: 'warning',
+        1: 'success',
+        2: 'info'
       }
       return statusMap[status]
     },
@@ -188,8 +225,8 @@ export default {
       default: false
     },
     userId: {
-      type: Number,
-      default: 0
+      type: String,
+      default: '0'
     }
   },
   data() {
@@ -256,6 +293,9 @@ export default {
         this.listQuery.ordering = prop
       }
       this.handleFilter()
+    },
+    handleCreate() {
+      this.$router.push({ path: '/experiment/create' })
     },
     handleDownload() {
       this.downloadLoading = true

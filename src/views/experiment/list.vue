@@ -6,7 +6,7 @@
 import ExperimentList from './components/ExperimentList'
 
 export default {
-  name: 'EditForm',
+  name: 'ListForm',
   components: { ExperimentList }
 }
 </script>
