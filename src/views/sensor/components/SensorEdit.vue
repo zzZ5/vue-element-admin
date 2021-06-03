@@ -8,8 +8,7 @@
         {{ status }}
       </el-button>
       <el-button
-        v-loading="loading"
-        :disabled="isDisabled"
+        :loading="loading"
         style="margin-left: 10px"
         type="success"
         @click="submitForm"
