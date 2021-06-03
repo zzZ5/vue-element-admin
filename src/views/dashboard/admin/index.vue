@@ -38,7 +38,9 @@
       </el-col>
     </el-row>
   </div> -->
-  <h1> Hello world </h1>
+  <div class="app-container">
+    <h1> Hello world </h1>
+  </div>
 </template>
 
 <script>
