@@ -176,7 +176,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/equipment/list'),
         name: 'EquipmentList',
-        meta: { title: 'Equipment List', icon: 'equipment', noCache: true, activeMenu: '/Equipment/list' }
+        meta: { title: 'Equipment List', icon: 'equipment', noCache: true, activeMenu: '/equipment/list' }
       },
       {
         path: 'create',
@@ -188,7 +188,7 @@ export const asyncRoutes = [
         path: 'edit/:id',
         component: () => import('@/views/equipment/edit'),
         name: 'EquipmentEdit',
-        meta: { title: 'Equipment Edit', noCache: true, activeMenu: '/equipment/list' },
+        meta: { title: 'Equipment Edit', noCache: true },
         hidden: true
       }
     ]
@@ -208,7 +208,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/sensor/list'),
         name: 'SensorList',
-        meta: { title: 'Sensor List', icon: 'list', noCache: true, activeMenu: '/Sensor/list' }
+        meta: { title: 'Sensor List', icon: 'list', noCache: true, activeMenu: '/sensor/list' }
       },
       {
         path: 'create',
@@ -220,7 +220,7 @@ export const asyncRoutes = [
         path: 'edit/:id',
         component: () => import('@/views/sensor/edit'),
         name: 'SensorEdit',
-        meta: { title: 'Sensor Edit', noCache: true, activeMenu: '/sensor/list' },
+        meta: { title: 'Sensor Edit', noCache: true },
         hidden: true
       }
     ]
