@@ -1,12 +1,12 @@
 <template>
-  <experiment-detail :is-edit="true" />
+  <experiment-edit :is-edit="true" />
 </template>
 
 <script>
-import ExperimentDetail from './components/ExperimentDetail'
+import ExperimentEdit from './components/ExperimentEdit'
 
 export default {
   name: 'EditForm',
-  components: { ExperimentDetail }
+  components: { ExperimentEdit }
 }
 </script>

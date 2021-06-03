@@ -1,13 +1,13 @@
 <template>
-  <equipment-detail :is-edit="false" />
+  <equipment-edit :is-edit="false" />
 </template>
 
 <script>
-import EquipmentDetail from './components/EquipmentDetail'
+import EquipmentEdit from './components/EquipmentEdit'
 
 export default {
   name: 'CreateEquipment',
-  components: { EquipmentDetail }
+  components: { EquipmentEdit }
 }
 </script>
 

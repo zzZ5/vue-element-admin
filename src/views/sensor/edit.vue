@@ -1,12 +1,12 @@
 <template>
-  <sensor-detail :is-edit="true" />
+  <sensor-edit :is-edit="true" />
 </template>
 
 <script>
-import SensorDetail from './components/SensorDetail'
+import SensorEdit from './components/SensorEdit'
 
 export default {
   name: 'EditForm',
-  components: { SensorDetail }
+  components: { SensorEdit }
 }
 </script>

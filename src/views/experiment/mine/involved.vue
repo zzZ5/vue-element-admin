@@ -6,7 +6,7 @@
 import ExperimentList from '../components/ExperimentList'
 
 export default {
-  name: 'Created',
+  name: 'Involved',
   components: { ExperimentList },
   data() {
     return {

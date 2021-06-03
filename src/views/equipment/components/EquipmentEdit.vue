@@ -1,5 +1,5 @@
 <template>
-  <div class="createSensor-container">
+  <div class="createEquipment-container">
     <sticky :z-index="10" class-name="sub-navbar draft">
       <el-button
         style="margin-left: 10px"
@@ -8,7 +8,7 @@
         {{ status }}
       </el-button>
       <el-button
-        v-loading="loading"
+        :loading="loading"
         :disabled="isDisabled"
         style="margin-left: 10px"
         type="success"
@@ -24,7 +24,7 @@
       :rules="rules"
       class="form-container"
     >
-      <div class="createSensor-main-container">
+      <div class="createEquipment-main-container">
         <el-row>
           <el-col :span="24">
             <el-row>
@@ -35,10 +35,10 @@
                 >
                   <MDinput
                     v-model="postForm.name"
+                    :disabled="isDisabled"
                     :maxlength="100"
                     name="name"
                     required
-                    :disabled="isDisabled"
                   >
                     Name
                   </MDinput>
@@ -51,10 +51,10 @@
                 >
                   <MDinput
                     v-model="postForm.abbreviation"
+                    :disabled="isDisabled"
                     :maxlength="100"
                     name="abbreviation"
                     required
-                    :disabled="isDisabled"
                   >
                     Abbreviation
                   </MDinput>
@@ -113,13 +113,45 @@
             class="word-counter"
           >{{ contentShortLength }}words</span>
         </el-form-item>
+        <el-form-item
+          style="margin-bottom: 40px"
+          label-width="70px"
+          label="Sensor:"
+          label-position="top"
+        >
+          <el-transfer
+            v-model="postForm.sensor"
+            v-loading="listLoading"
+            :props="{
+              key: 'id',
+              label: 'name',
+            }"
+            style="text-align: left; display: inline-block"
+            :titles="['Available', 'Selected']"
+            :data="sensorList"
+            @change="transferChange"
+          >
+            <el-pagination
+              v-show="pagination.total_size > 0"
+              slot="left-footer"
+              :total="pagination.total_size"
+              :current-page.sync="listQuery.page"
+              :page-size.sync="listQuery.size"
+              small
+              layout="prev, pager, next"
+              align="right"
+              @current-change="getSensorList"
+            />
+          </el-transfer>
+        </el-form-item>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { fetchSensor, updateSensor, createSensor } from '@/api/sensor'
+import { fetchEquipment, updateEquipment, createEquipment } from '@/api/equipment'
+import { fetchList } from '@/api/sensor'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
@@ -129,12 +161,12 @@ const defaultForm = {
   abbreviation: '', // 设备简称
   type: '', // 设备类型
   descript: '', // 设备描述
-  equipment: '', // 设备传感器
+  sensor: [], // 设备传感器
   created_time: undefined // 设备创建时间
 }
 
 export default {
-  name: 'SensorDetail',
+  name: 'EquipmentEdit',
   components: { Sticky, MDinput },
   props: {
     isEdit: {
@@ -158,8 +190,10 @@ export default {
       isDisabled: true,
       status: 'View',
       postForm: Object.assign({}, defaultForm),
+      sensorList: [],
+      selectedSensor: [],
       loading: false,
-      typeOptions: ['T', 'H'],
+      typeOptions: ['RE'],
       rules: {
         name: [{ validator: validateRequire }],
         abbreviation: [{ validator: validateRequire }],
@@ -191,16 +225,45 @@ export default {
       this.status = 'View'
       this.isDisabled = false
     }
+    this.getSensorList()
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
+    unique(arr) {
+      // 根据唯一标识id来对数组进行过滤
+      const res = new Map()
+      return arr.filter((arr) => !res.has(arr.id) && res.set(arr.id, 1))
+    },
+
+    getSensorList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then((response) => {
+        this.sensorList = response.data.list
+        this.sensorList = [...this.sensorList, ...this.selectedSensor]
+        this.sensorList = this.unique(this.sensorList)
+        this.pagination = response.data.pagination
+        this.listLoading = false
+      })
+    },
+    transferChange(current, direction, move) {
+      this.selectedSensor = this.sensorList.filter(function(val) {
+        return current.includes(val.id)
+      })
+    },
+
     fetchData(id) {
-      fetchSensor(id)
+      fetchEquipment(id)
         .then((response) => {
           this.postForm = response.data
+          const temp = []
+          for (const sensor of response.data.sensor) {
+            this.selectedSensor.push(sensor)
+            temp.push(sensor.id)
+          }
+          this.postForm.sensor = temp
           // set tagsview title
           this.setTagsViewTitle()
           // set page title
@@ -211,14 +274,14 @@ export default {
         })
     },
     setTagsViewTitle() {
-      const title = 'Edit Sensor'
+      const title = 'Edit Equipment'
       const route = Object.assign({}, this.tempRoute, {
         title: `${title}-${this.postForm.id}`
       })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Sensor'
+      const title = 'Edit Equipment'
       document.title = `${title} - ${this.postForm.id}`
     },
     editForm() {
@@ -231,11 +294,12 @@ export default {
       }
     },
     submitForm() {
+      console.log(this.postForm)
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           this.loading = true
           if (this.isEdit) {
-            updateSensor(this.postForm.id, this.postForm).then((response) => {
+            updateEquipment(this.postForm.id, this.postForm).then((response) => {
               this.editForm()
               this.$notify({
                 title: 'Success',
@@ -245,7 +309,7 @@ export default {
               })
             })
           } else {
-            createSensor(this.postForm).then((response) => {
+            createEquipment(this.postForm).then((response) => {
               this.editForm()
               this.$notify({
                 title: 'Success',
@@ -269,10 +333,10 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
-.createSensor-container {
+.createEquipment-container {
   position: relative;
 
-  .createSensor-main-container {
+  .createEquipment-main-container {
     padding: 40px 45px 20px 50px;
 
     .postInfo-container {

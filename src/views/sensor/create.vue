@@ -1,13 +1,13 @@
 <template>
-  <sensor-detail :is-edit="false" />
+  <sensor-edit :is-edit="false" />
 </template>
 
 <script>
-import SensorDetail from './components/SensorDetail'
+import SensorEdit from './components/SensorEdit'
 
 export default {
   name: 'CreateSensor',
-  components: { SensorDetail }
+  components: { SensorEdit }
 }
 </script>
 

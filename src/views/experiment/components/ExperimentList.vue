@@ -122,6 +122,15 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="Actions" align="center" width="150" class-name="small-padding fixed-width">
+        <el-button type="primary" size="mini">
+          Edit
+        </el-button>
+        <el-button size="mini" type="success">
+          Detail
+        </el-button>
+      </el-table-column>
+
       <pagination
         v-show="pagination.total_size > 0"
         :total="pagination.total_size"

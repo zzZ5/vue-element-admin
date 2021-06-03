@@ -8,7 +8,7 @@
         {{ status }}
       </el-button>
       <el-button
-        v-loading="loading.publish"
+        :loading="loading.publish"
         :disabled="isDisabled"
         style="margin-left: 10px"
         type="success"

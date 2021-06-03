@@ -1,13 +1,13 @@
 <template>
-  <Experiment-detail :is-edit="false" />
+  <experiment-edit :is-edit="false" />
 </template>
 
 <script>
-import ExperimentDetail from './components/ExperimentDetail'
+import ExperimentEdit from './components/ExperimentEdit'
 
 export default {
   name: 'CreateExperiment',
-  components: { ExperimentDetail }
+  components: { ExperimentEdit }
 }
 </script>
 

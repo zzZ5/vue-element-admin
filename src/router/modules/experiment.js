@@ -49,6 +49,13 @@ const experimentRouter = {
       name: 'ExperimentEdit',
       meta: { title: 'Experiment Edit', noCache: true, activeMenu: '/experiment/list' },
       hidden: true
+    },
+    {
+      path: 'detail/:id',
+      component: () => import('@/views/experiment/detail'),
+      name: 'ExperimentDetail',
+      meta: { title: 'Experiment Detail', noCache: true, activeMenu: '/experiment/list' },
+      hidden: true
     }
   ]
 }
