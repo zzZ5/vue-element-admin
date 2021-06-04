@@ -91,7 +91,7 @@
 
       <el-table-column label="Name" min-width="50px">
         <template slot-scope="{ row }">
-          <router-link :to="'/experiment/edit/' + row.id" class="link-type">
+          <router-link :to="'/experiment/detail/' + row.id" class="link-type">
             <span class="link-type">{{ row.name }}</span>
           </router-link>
         </template>
