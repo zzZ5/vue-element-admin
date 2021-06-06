@@ -190,6 +190,13 @@ export const asyncRoutes = [
         name: 'EquipmentEdit',
         meta: { title: 'Equipment Edit', noCache: true },
         hidden: true
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/equipment/detail'),
+        name: 'EquipmentDetail',
+        meta: { title: 'Equipment Detail', noCache: true },
+        hidden: true
       }
     ]
   },

@@ -105,10 +105,12 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button size="mini" style="margin-right: 10px" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <el-button size="mini"> Record </el-button>
+          <router-link :to="'/equipment/detail/' + row.id" class="link-type">
+            <el-button size="mini" type="success"> Detail </el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>

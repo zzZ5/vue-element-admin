@@ -16,17 +16,10 @@
               <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
             </div>
             <div class="text item">
-              <span>Sensors:</span>
-              <div v-for="sensor in row.sensor" :key="sensor.id">
-                <div style="margin: 6px 20px">
-                  <b>{{ sensor.name }}</b>
-                  <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>
-                  <el-tag size="small" type="success" style="margin-left: 10px"> {{ sensor.type }} </el-tag>
-                </div>
-              </div>
+              <span>{{ row.descript }}</span>
             </div>
             <el-divider />
-            <small> {{ row.descript }} </small>
+            <small> {{ row.data_latest }} </small>
           </el-card>
         </el-col>
       </el-row>
@@ -55,7 +48,7 @@ export default {
     fetchData(id) {
       this.loading = true
       fetchEquipment(id).then((response) => {
-        this.list = response.data.equipment
+        this.list = response.data.sensor
         console.log(this.list)
       })
     }
