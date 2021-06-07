@@ -8,7 +8,7 @@
         class="filter-item"
         style="margin-left: 10px"
         type="primary"
-        icon="el-ic on-download"
+        icon="el-icon-download"
         @click="handleDownload"
       >
         Export
@@ -72,7 +72,7 @@ export default {
       pagination: { total_size: 0 },
       listLoading: true,
       listQuery: {
-        experiment: undefined,
+        experiment: '0',
         page: 1,
         size: 100,
         step: 1
@@ -83,7 +83,7 @@ export default {
   created() {
     const experimentId = this.$route.params && this.$route.params.experimentId
     this.listQuery.experiment = experimentId
-    const id = this.$route.params && this.$route.params.id
+    const id = this.$route.params && this.$route.params.sensorId
     this.getList(id)
   },
   methods: {
