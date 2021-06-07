@@ -108,7 +108,7 @@
           <el-button size="mini" style="margin-right: 10px" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <router-link :to="'/equipment/detail/' + row.id" class="link-type">
+          <router-link :to="'/equipment/detail/0/' + row.id" class="link-type">
             <el-button size="mini" type="success"> Detail </el-button>
           </router-link>
         </template>

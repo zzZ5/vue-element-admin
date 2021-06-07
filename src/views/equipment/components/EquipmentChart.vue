@@ -1,79 +1,23 @@
 <template>
-  <div class="experimentDetail-container">
-    <div v-loading class="experimentDetail-main-container">
-      <el-row :gutter="20" style="margin-top: 50px">
-        <el-col v-for="row in list" :key="row.id" :span="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <b> {{ row.name }} </b>
-              <el-button
-                plain
-                type="text"
-                style="float: right; padding: 3px 5px"
-                icon="el-icon-more"
-              />
-              <small style="padding-left: 5px">({{ row.abbreviation }})</small>
-              <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
-            </div>
-            <div class="text item">
-              <span>Sensors:</span>
-              <div v-for="sensor in row.sensor" :key="sensor.id">
-                <div style="margin: 6px 20px">
-                  <b>{{ sensor.name }}</b>
-                  <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>
-                  <el-tag size="small" type="success" style="margin-left: 10px"> {{ sensor.type }} </el-tag>
-                </div>
-              </div>
-            </div>
-            <el-divider />
-            <small> {{ row.descript }} </small>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
+  <div class="chart-container">
+    <chart height="100%" width="100%" />
   </div>
 </template>
 
 <script>
-import { fetchExperiment } from '@/api/experiment'
+import Chart from '@/components/Charts/LineMarker'
 
 export default {
-  name: 'ExperimentDetail',
-  components: {},
-  data() {
-    return {
-      list: [],
-      loading: false
-    }
-  },
-  computed: {},
-  created() {
-    const id = this.$route.params && this.$route.params.id
-    this.fetchData(id)
-  },
-  methods: {
-    fetchData(id) {
-      this.loading = true
-      fetchExperiment(id).then((response) => {
-        this.list = response.data.equipment
-        console.log(this.list)
-      })
-    }
-  }
+  name: 'LineChart',
+  components: { Chart }
 }
 </script>
 
-<style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
-
-.experimentDetail-container {
+<style scoped>
+.chart-container{
   position: relative;
-
-  .experimentDetail-main-container {
-    padding: 0px 45px 20px 50px;
-  }
-}
-.box-card {
-  margin-bottom: 10px;
+  width: 100%;
+  height: calc(100vh - 84px);
 }
 </style>
+

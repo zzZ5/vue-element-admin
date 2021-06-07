@@ -5,25 +5,49 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <b> {{ row.name }} </b>
-              <el-button
-                plain
-                type="text"
-                style="float: right; padding: 3px 5px"
-                icon="el-icon-more"
-              />
-              <small style="padding-left: 5px">({{ row.abbreviation }})</small>
-              <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
+
+              <div v-if="experimentId==='0'">
+                <b> {{ row.name }} </b>
+                <el-button
+                  plain
+                  type="text"
+                  style="float: right; padding: 3px 5px"
+                  icon="el-icon-more"
+                />
+                <small style="padding-left: 5px">({{ row.abbreviation }})</small>
+                <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
+              </div>
+              <div v-else>
+                <router-link :to="'/sensor/detail/' + experimentId + '/' + row.id" class="link-type">
+                  <span class="link-type">
+                    <b> {{ row.name }} </b>
+                  </span>
+                </router-link>
+                <el-button
+                  plain
+                  type="text"
+                  style="float: right; padding: 3px 5px"
+                  icon="el-icon-more"
+                />
+                <small style="padding-left: 5px">({{ row.abbreviation }})</small>
+                <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
+              </div>
+
             </div>
             <div class="text item">
               <span>{{ row.descript }}</span>
             </div>
             <el-divider />
             <small>
-              <b>Latest data:</b>
-              <span> {{ row.data_latest.value }} &emsp;&emsp; </span>
-              <span> {{ row.data_latest.unit }} &emsp;&emsp; </span>
-              <span> {{ row.data_latest.measured_time }} </span>
+              <div style="margin-bottom:5px">
+                <b>Latest data:</b>
+                <span> {{ row.data_latest.value }} </span>
+                <span> {{ row.data_latest.unit }} </span>
+              </div>
+              <div>
+                <b>Time</b>
+                <span> {{ row.data_latest.measured_time }} </span>
+              </div>
             </small>
           </el-card>
         </el-col>
@@ -40,13 +64,16 @@ export default {
   components: {},
   data() {
     return {
+      experimentId: '0',
       list: [],
       loading: false
     }
   },
   computed: {},
   created() {
-    const id = this.$route.params && this.$route.params.id
+    const experimentId = this.$route.params && this.$route.params.experimentId
+    this.experimentId = experimentId
+    const id = this.$route.params && this.$route.params.equipmentId
     this.fetchData(id)
   },
   methods: {
