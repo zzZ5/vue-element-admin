@@ -192,7 +192,7 @@ export const asyncRoutes = [
         hidden: true
       },
       {
-        path: 'detail/:id',
+        path: 'detail/:experimentId/:equipmentId',
         component: () => import('@/views/equipment/detail'),
         name: 'EquipmentDetail',
         meta: { title: 'Equipment Detail', noCache: true },
@@ -224,14 +224,14 @@ export const asyncRoutes = [
         meta: { title: 'Create Sensor', icon: 'edit', noCache: true, activeMenu: '/sensor/create' }
       },
       {
-        path: 'edit/:id',
+        path: 'edit/:experimentId/:id',
         component: () => import('@/views/sensor/edit'),
         name: 'SensorEdit',
         meta: { title: 'Sensor Edit', noCache: true },
         hidden: true
       },
       {
-        path: 'detail/:experimentId/:id',
+        path: 'detail/:experimentId/:sensorId',
         component: () => import('@/views/sensor/detail'),
         name: 'SensorDetail',
         meta: { title: 'Sensor Detail', noCache: true },
