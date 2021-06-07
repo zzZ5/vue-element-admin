@@ -22,7 +22,7 @@
               <span>Sensors:</span>
               <div v-for="sensor in row.sensor" :key="sensor.id">
                 <div style="margin: 6px 20px">
-                  <router-link :to="{ path: '/sensor/detail/' + sensor.id, params: {equipmentId: id}}" class="link-type">
+                  <router-link :to="{ path: '/sensor/detail/' + id + '/'+ sensor.id}" class="link-type">
                     <span class="link-type"> <b> {{ sensor.name }} </b></span>
                   </router-link>
                   <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>

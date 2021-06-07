@@ -65,10 +65,6 @@ export default {
   filters: {
   },
   props: {
-    experimentId: {
-      type: String,
-      default: '0'
-    }
   },
   data() {
     return {
@@ -85,7 +81,8 @@ export default {
     }
   },
   created() {
-    this.listQuery.experiment = this.experimentId
+    const experimentId = this.$route.params && this.$route.params.experimentId
+    this.listQuery.experiment = experimentId
     const id = this.$route.params && this.$route.params.id
     this.getList(id)
   },
@@ -123,7 +120,7 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'experiment-table'
+          filename: 'data-table'
         })
         this.downloadLoading = false
       })
