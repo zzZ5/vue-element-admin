@@ -1,5 +1,5 @@
 <template>
-  <experiment-detail :is-edit="true" />
+  <experiment-detail />
 </template>
 
 <script>

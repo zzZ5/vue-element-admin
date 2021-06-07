@@ -5,7 +5,7 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <router-link :to="'/equipment/detail/' + row.id" class="link-type">
+              <router-link :to="'/equipment/detail/' + id + '/'+ row.id" class="link-type">
                 <span class="link-type"> <b> {{ row.name }} </b></span>
               </router-link>
 
