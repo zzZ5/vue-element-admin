@@ -16,11 +16,11 @@ export function getInfo(token) {
   })
 }
 
-export function fetchList(query) {
+export function fetchList(listQuery) {
   return request({
     url: '/account/list/',
     method: 'get',
-    params: query
+    params: listQuery
   })
 }
 

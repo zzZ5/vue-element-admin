@@ -19,7 +19,12 @@
               <span>{{ row.descript }}</span>
             </div>
             <el-divider />
-            <small> {{ row.data_latest }} </small>
+            <small>
+              <b>Latest data:</b>
+              <span> {{ row.data_latest.value }} &emsp;&emsp; </span>
+              <span> {{ row.data_latest.unit }} &emsp;&emsp; </span>
+              <span> {{ row.data_latest.measured_time }} </span>
+            </small>
           </el-card>
         </el-col>
       </el-row>

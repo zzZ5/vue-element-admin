@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchList(listQuery) {
   return request({
     url: '/sensor/list/',
     method: 'get',
-    params: query
+    params: listQuery
   })
 }
 
@@ -19,7 +19,7 @@ export function fetchRecord(id, listQuery) {
   return request({
     url: '/sensor/' + id + '/record/',
     method: 'get',
-    params: { listQuery }
+    params: listQuery
   })
 }
 
@@ -36,5 +36,13 @@ export function updateSensor(id, data) {
     url: '/sensor/' + id + '/update/',
     method: 'put',
     data
+  })
+}
+
+export function fetchData(id, listQuery) {
+  return request({
+    url: '/sensor/' + id + '/data/',
+    method: 'get',
+    params: listQuery
   })
 }

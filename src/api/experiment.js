@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchList(listQuery) {
   return request({
     url: '/experiment/list/',
     method: 'get',
-    params: query
+    params: listQuery
   })
 }
 
@@ -19,7 +19,7 @@ export function fetchRecord(id, listQuery) {
   return request({
     url: '/experiment/' + id + '/record/',
     method: 'get',
-    params: { listQuery }
+    params: listQuery
   })
 }
 

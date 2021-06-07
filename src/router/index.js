@@ -229,6 +229,13 @@ export const asyncRoutes = [
         name: 'SensorEdit',
         meta: { title: 'Sensor Edit', noCache: true },
         hidden: true
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/sensor/detail'),
+        name: 'SensorDetail',
+        meta: { title: 'Sensor Detail', noCache: true },
+        hidden: true
       }
     ]
   },

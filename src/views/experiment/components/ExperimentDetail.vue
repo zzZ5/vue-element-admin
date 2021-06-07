@@ -5,7 +5,10 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <b> {{ row.name }} </b>
+              <router-link :to="'/equipment/detail/' + row.id" class="link-type">
+                <span class="link-type"> <b> {{ row.name }} </b></span>
+              </router-link>
+
               <el-button
                 plain
                 type="text"
@@ -19,7 +22,9 @@
               <span>Sensors:</span>
               <div v-for="sensor in row.sensor" :key="sensor.id">
                 <div style="margin: 6px 20px">
-                  <b>{{ sensor.name }}</b>
+                  <router-link :to="{ path: '/sensor/detail/' + sensor.id, params: {equipmentId: id}}" class="link-type">
+                    <span class="link-type"> <b> {{ sensor.name }} </b></span>
+                  </router-link>
                   <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>
                   <el-tag size="small" type="success" style="margin-left: 10px"> {{ sensor.type }} </el-tag>
                 </div>
@@ -42,14 +47,15 @@ export default {
   components: {},
   data() {
     return {
+      id: undefined,
       list: [],
       loading: false
     }
   },
   computed: {},
   created() {
-    const id = this.$route.params && this.$route.params.id
-    this.fetchData(id)
+    this.id = this.$route.params && this.$route.params.id
+    this.fetchData(this.id)
   },
   methods: {
     fetchData(id) {
