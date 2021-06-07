@@ -176,7 +176,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/equipment/list'),
         name: 'EquipmentList',
-        meta: { title: 'Equipment List', icon: 'equipment', noCache: true, activeMenu: '/equipment/list' }
+        meta: { title: 'Equipment List', icon: 'equipment', noCache: false, activeMenu: '/equipment/list' }
       },
       {
         path: 'create',
@@ -231,7 +231,7 @@ export const asyncRoutes = [
         hidden: true
       },
       {
-        path: 'detail/:id',
+        path: 'detail/:experimentId/:id',
         component: () => import('@/views/sensor/detail'),
         name: 'SensorDetail',
         meta: { title: 'Sensor Detail', noCache: true },
