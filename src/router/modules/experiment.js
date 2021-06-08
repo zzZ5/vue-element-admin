@@ -21,25 +21,25 @@ const experimentRouter = {
       path: 'create',
       component: () => import('@/views/experiment/create'),
       name: 'CreateExperiment',
-      meta: { title: 'Create Experiment', icon: 'edit', noCache: true, activeMenu: '/experiment/create', roles: ['admin', 'active'] }
+      meta: { title: 'Create Experiment', icon: 'edit', activeMenu: '/experiment/create', roles: ['admin', 'active'] }
     },
     {
       path: 'mine',
       component: () => import('@/views/experiment/mine/index'),
       name: 'MyExperiment',
-      meta: { title: 'My Experiment', icon: 'my-experiment', noCache: false, activeMenu: '/experiment/mine', roles: ['admin', 'active'] },
+      meta: { title: 'My Experiment', icon: 'my-experiment', activeMenu: '/experiment/mine', roles: ['admin', 'active'] },
       children: [
         {
           path: 'created',
           component: () => import('@/views/experiment/mine/created'),
           name: 'Created',
-          meta: { title: 'Created', icon: 'created', noCache: false, activeMenu: '/experiment/mine/created' }
+          meta: { title: 'Created', icon: 'created', activeMenu: '/experiment/mine/created' }
         },
         {
           path: 'involved',
           component: () => import('@/views/experiment/mine/involved'),
           name: 'Involved',
-          meta: { title: 'Involved', icon: 'involved', noCache: false, activeMenu: '/experiment/mine/involved' }
+          meta: { title: 'Involved', icon: 'involved', activeMenu: '/experiment/mine/involved' }
         }
       ]
     },
@@ -47,14 +47,14 @@ const experimentRouter = {
       path: 'edit/:id',
       component: () => import('@/views/experiment/edit'),
       name: 'ExperimentEdit',
-      meta: { title: 'Experiment Edit', noCache: false },
+      meta: { title: 'Experiment Edit' },
       hidden: true
     },
     {
       path: 'detail/:id',
       component: () => import('@/views/experiment/detail'),
       name: 'ExperimentDetail',
-      meta: { title: 'Experiment Detail', noCache: false },
+      meta: { title: 'Experiment Detail' },
       hidden: true
     }
   ]

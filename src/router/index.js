@@ -176,26 +176,33 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/equipment/list'),
         name: 'EquipmentList',
-        meta: { title: 'Equipment List', icon: 'equipment', noCache: false, activeMenu: '/equipment/list' }
+        meta: { title: 'Equipment List', icon: 'equipment', activeMenu: '/equipment/list' }
       },
       {
         path: 'create',
         component: () => import('@/views/equipment/create'),
         name: 'CreateEquipment',
-        meta: { title: 'Create Equipment', icon: 'edit', noCache: true, activeMenu: '/equipment/create', roles: ['admin'] }
+        meta: { title: 'Create Equipment', icon: 'edit', activeMenu: '/equipment/create', roles: ['admin'] }
       },
       {
         path: 'edit/:id',
         component: () => import('@/views/equipment/edit'),
         name: 'EquipmentEdit',
-        meta: { title: 'Equipment Edit', noCache: true },
+        meta: { title: 'Equipment Edit' },
         hidden: true
       },
       {
         path: 'detail/:experimentId/:equipmentId',
         component: () => import('@/views/equipment/detail'),
         name: 'EquipmentDetail',
-        meta: { title: 'Equipment Detail', noCache: true },
+        meta: { title: 'Equipment Detail' },
+        hidden: true
+      },
+      {
+        path: 'chart/:experimentId/:equipmentId',
+        component: () => import('@/views/equipment/chart'),
+        name: 'EquipmentChart',
+        meta: { title: 'Equipment Chart' },
         hidden: true
       }
     ]
@@ -215,26 +222,26 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/sensor/list'),
         name: 'SensorList',
-        meta: { title: 'Sensor List', icon: 'list', noCache: true, activeMenu: '/sensor/list' }
+        meta: { title: 'Sensor List', icon: 'list', activeMenu: '/sensor/list' }
       },
       {
         path: 'create',
         component: () => import('@/views/sensor/create'),
         name: 'CreateSensor',
-        meta: { title: 'Create Sensor', icon: 'edit', noCache: true, activeMenu: '/sensor/create' }
+        meta: { title: 'Create Sensor', icon: 'edit', activeMenu: '/sensor/create' }
       },
       {
         path: 'edit/:experimentId/:id',
         component: () => import('@/views/sensor/edit'),
         name: 'SensorEdit',
-        meta: { title: 'Sensor Edit', noCache: true },
+        meta: { title: 'Sensor Edit' },
         hidden: true
       },
       {
         path: 'detail/:experimentId/:sensorId',
         component: () => import('@/views/sensor/detail'),
         name: 'SensorDetail',
-        meta: { title: 'Sensor Detail', noCache: true },
+        meta: { title: 'Sensor Detail' },
         hidden: true
       }
     ]
