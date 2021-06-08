@@ -8,12 +8,19 @@
 
               <div v-if="experimentId==='0'">
                 <b> {{ row.name }} </b>
-                <el-button
-                  plain
-                  type="text"
-                  style="float: right; padding: 3px 5px"
-                  icon="el-icon-more"
-                />
+                <el-dropdown trigger="click" style="float: right; padding-top: 0px" @command="handleCommand">
+                  <span class="el-dropdown-link">
+                    <el-button
+                      plain
+                      type="text"
+                      style="float: right; padding: 3px 5px"
+                      icon="el-icon-more"
+                    />
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item :command="row.id">Chart</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
                 <small style="padding-left: 5px">({{ row.abbreviation }})</small>
                 <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
               </div>
@@ -23,12 +30,19 @@
                     <b> {{ row.name }} </b>
                   </span>
                 </router-link>
-                <el-button
-                  plain
-                  type="text"
-                  style="float: right; padding: 3px 5px"
-                  icon="el-icon-more"
-                />
+                <el-dropdown trigger="click" style="float: right; padding-top: 0px" @command="handleCommand">
+                  <span class="el-dropdown-link">
+                    <el-button
+                      plain
+                      type="text"
+                      style="float: right; padding: 3px 5px"
+                      icon="el-icon-more"
+                    />
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item :command="{command:'chart', equipmentId: row.id}">Chart</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
                 <small style="padding-left: 5px">({{ row.abbreviation }})</small>
                 <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
               </div>
@@ -77,6 +91,11 @@ export default {
     this.fetchData(id)
   },
   methods: {
+    handleCommand(command) {
+      if (command.command === 'chart') {
+        this.$router.push({ path: '/equipment/chart/' + this.experimentId + '/' + command.equipmentId })
+      }
+    },
     fetchData(id) {
       this.loading = true
       fetchEquipment(id).then((response) => {
