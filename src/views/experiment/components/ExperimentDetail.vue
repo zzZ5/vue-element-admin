@@ -5,16 +5,22 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <router-link :to="'/equipment/detail/' + id + '/'+ row.id" class="link-type">
+              <router-link :to="'/equipment/detail/' + experimentId + '/'+ row.id" class="link-type">
                 <span class="link-type"> <b> {{ row.name }} </b></span>
               </router-link>
-
-              <el-button
-                plain
-                type="text"
-                style="float: right; padding: 3px 5px"
-                icon="el-icon-more"
-              />
+              <el-dropdown trigger="click" style="float: right; padding-top: 0px" @command="handleCommand">
+                <span class="el-dropdown-link">
+                  <el-button
+                    plain
+                    type="text"
+                    style="float: right; padding: 3px 5px"
+                    icon="el-icon-more"
+                  />
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="{command:'chart', equipmentId: row.id}">Chart</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
               <small style="padding-left: 5px">({{ row.abbreviation }})</small>
               <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
             </div>
@@ -22,7 +28,7 @@
               <span>Sensors:</span>
               <div v-for="sensor in row.sensor" :key="sensor.id">
                 <div style="margin: 6px 20px">
-                  <router-link :to="{ path: '/sensor/detail/' + id + '/'+ sensor.id}" class="link-type">
+                  <router-link :to="{ path: '/sensor/detail/' + experimentId + '/'+ sensor.id}" class="link-type">
                     <span class="link-type"> <b> {{ sensor.name }} </b></span>
                   </router-link>
                   <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>
@@ -47,17 +53,22 @@ export default {
   components: {},
   data() {
     return {
-      id: undefined,
+      experimentId: '0',
       list: [],
       loading: false
     }
   },
   computed: {},
   created() {
-    this.id = this.$route.params && this.$route.params.id
-    this.fetchData(this.id)
+    this.experimentId = this.$route.params && this.$route.params.id
+    this.fetchData(this.experimentId)
   },
   methods: {
+    handleCommand(command) {
+      if (command.command === 'chart') {
+        this.$router.push({ path: '/equipment/chart/' + this.experimentId + '/' + command.equipmentId })
+      }
+    },
     fetchData(id) {
       this.loading = true
       fetchExperiment(id).then((response) => {
