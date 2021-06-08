@@ -38,3 +38,11 @@ export function updateEquipment(id, data) {
     data
   })
 }
+
+export function fetchData(id, listQuery) {
+  return request({
+    url: '/equipment/' + id + '/data/',
+    method: 'get',
+    params: listQuery
+  })
+}
