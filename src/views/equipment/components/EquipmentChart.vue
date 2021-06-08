@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       chart: null,
-      sensors: [],
+      series: [],
       experimentId: '0',
       equipmentId: '0',
       query: {
@@ -41,6 +41,11 @@ export default {
         end_time: undefined
       },
       loading: false
+    }
+  },
+  watch: {
+    series(val) {
+      this.chart.setOption({ series: val })
     }
   },
   mounted() {
@@ -65,8 +70,14 @@ export default {
     fetchData() {
       this.loading = true
       fetchData(this.equipmentId, this.query).then((response) => {
-        this.sensors = response.data
-        console.log(this.sensors)
+        this.series = [{
+          name: '',
+          type: 'line',
+          showSymbol: false,
+          hoverAnimation: false,
+          data: [3, 4, 5]
+        }]
+        // console.log(this.sensors)
       })
     },
     initChart() {
@@ -121,7 +132,7 @@ export default {
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
-          data: this.sensors[0]['data']
+          data: this.sensors
         }]
       })
     }
