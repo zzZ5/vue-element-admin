@@ -31,58 +31,7 @@ export default {
     return {
       chart: null,
       series: [],
-      experimentId: '0',
-      equipmentId: '0',
-      query: {
-        experiment: '0',
-        step: 1,
-        count: undefined,
-        begin_time: undefined,
-        end_time: undefined
-      },
-      loading: false
-    }
-  },
-  watch: {
-    series(val) {
-      this.chart.setOption({ series: val })
-    }
-  },
-  mounted() {
-    this.initChart()
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return
-    }
-    this.chart.dispose()
-    this.chart = null
-  },
-  created() {
-    const experimentId = this.$route.params && this.$route.params.experimentId
-    this.experimentId = experimentId
-    const equipmentId = this.$route.params && this.$route.params.equipmentId
-    this.equipmentId = equipmentId
-    this.query.experiment = this.experimentId
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      this.loading = true
-      fetchData(this.equipmentId, this.query).then((response) => {
-        this.series = [{
-          name: '',
-          type: 'line',
-          showSymbol: false,
-          hoverAnimation: false,
-          data: [3, 4, 5]
-        }]
-        // console.log(this.sensors)
-      })
-    },
-    initChart() {
-      this.chart = echarts.init(document.getElementById(this.id))
-      this.chart.setOption({
+      option: {
         title: {
           text: ''
         },
@@ -126,15 +75,70 @@ export default {
         }, {
           start: 0,
           end: 100
-        }],
-        series: [{
-          name: '',
-          type: 'line',
-          showSymbol: false,
-          hoverAnimation: false,
-          data: this.sensors
         }]
+      },
+      experimentId: '0',
+      equipmentId: '0',
+      query: {
+        experiment: '0',
+        step: 1,
+        count: undefined,
+        begin_time: undefined,
+        end_time: undefined
+      },
+      loading: false
+    }
+  },
+  watch: {
+    series(val) {
+      // this.chart.setOption(this.option)
+      if (val !== []) {
+        this.chart.setOption({ series: val })
+      }
+    }
+  },
+  mounted() {
+    this.initChart()
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
+  created() {
+    const experimentId = this.$route.params && this.$route.params.experimentId
+    this.experimentId = experimentId
+    const equipmentId = this.$route.params && this.$route.params.equipmentId
+    this.equipmentId = equipmentId
+    this.query.experiment = this.experimentId
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      fetchData(this.equipmentId, this.query).then((response) => {
+        const tempSeries = []
+        response.data.forEach(element => {
+          const series = {
+            name: element.name,
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            data: []
+          }
+          element.data.forEach(i => {
+            series.data.push([i.measured_time, i.value])
+          })
+          tempSeries.push(series)
+        })
+        this.series = tempSeries
+        console.log(this.series)
       })
+    },
+    initChart() {
+      this.chart = echarts.init(document.getElementById(this.id))
+      this.chart.setOption(this.option)
     }
   }
 }
