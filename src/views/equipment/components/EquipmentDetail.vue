@@ -46,23 +46,29 @@
                 <small style="padding-left: 5px">({{ row.abbreviation }})</small>
                 <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
               </div>
-
             </div>
             <div class="text item">
               <span>{{ row.descript }}</span>
+              <el-divider />
+              <small>
+                <div style="margin-bottom:5px">
+                  <b>key: </b>
+                  <span> {{ row.key }} </span>
+                </div>
+              </small>
+
+              <small>
+                <div style="margin-bottom:5px">
+                  <b>Latest data:</b>
+                  <span> {{ row.data_latest.value }} </span>
+                  <span> {{ row.data_latest.unit }} </span>
+                </div>
+                <div>
+                  <b>Time</b>
+                  <span> {{ row.data_latest.measured_time }} </span>
+                </div>
+              </small>
             </div>
-            <el-divider />
-            <small>
-              <div style="margin-bottom:5px">
-                <b>Latest data:</b>
-                <span> {{ row.data_latest.value }} </span>
-                <span> {{ row.data_latest.unit }} </span>
-              </div>
-              <div>
-                <b>Time</b>
-                <span> {{ row.data_latest.measured_time }} </span>
-              </div>
-            </small>
           </el-card>
         </el-col>
       </el-row>
