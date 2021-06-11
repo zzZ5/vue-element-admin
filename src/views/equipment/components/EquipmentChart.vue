@@ -32,6 +32,9 @@ export default {
       chart: null,
       series: [],
       option: {
+        legend: {
+
+        },
         title: {
           text: ''
         },
@@ -42,21 +45,37 @@ export default {
             },
             restore: {},
             saveAsImage: {},
-            dataView: {}
+            dataView: {
+              readOnly: false
+              // optionToContent: function(opt) {
+              //   var series = opt.series
+              //   var content = ''
+              //   for (var i = 0; i < series.length; i++) {
+              //     content += '<b>' + series[i].name + '</b>' + '</br>'
+
+              //     for (var j = 0; j < series[i].data.length; j++) {
+              //       content += '<span>' + series[i].data[j][0] + '</span>' + '\t' +
+              //                  '<span>' + series[i].data[j][1] + '</span>' + '</br>'
+              //     }
+              //   }
+              //   return content
+              // }
+            }
           }
         },
         tooltip: {
           trigger: 'axis',
-          formatter: function(params) {
-            params = params[0]
-            return params.value[0] + ' : ' + params.value[1]
-          },
           axisPointer: {
             animation: false
           }
         },
+        grid: {
+          show: true,
+          containLabel: true
+        },
         xAxis: {
           type: 'time',
+          boundaryGap: false,
           splitLine: {
             show: false
           }
@@ -64,7 +83,7 @@ export default {
         yAxis: {
           type: 'value',
           splitLine: {
-            show: false
+            show: true
           }
         },
         dataZoom: [{
@@ -123,17 +142,18 @@ export default {
           const series = {
             name: element.name,
             type: 'line',
+            smooth: true,
             showSymbol: false,
-            hoverAnimation: false,
+            // hoverAnimation: false,
             data: []
           }
           element.data.forEach(i => {
             series.data.push([i.measured_time, i.value])
           })
+          console.log(series)
           tempSeries.push(series)
         })
         this.series = tempSeries
-        console.log(this.series)
       })
     },
     initChart() {
