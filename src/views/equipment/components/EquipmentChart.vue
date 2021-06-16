@@ -33,7 +33,6 @@ export default {
       series: [],
       option: {
         legend: {
-
         },
         title: {
           text: ''
@@ -45,22 +44,7 @@ export default {
             },
             restore: {},
             saveAsImage: {},
-            dataView: {
-              readOnly: false
-              // optionToContent: function(opt) {
-              //   var series = opt.series
-              //   var content = ''
-              //   for (var i = 0; i < series.length; i++) {
-              //     content += '<b>' + series[i].name + '</b>' + '</br>'
-
-              //     for (var j = 0; j < series[i].data.length; j++) {
-              //       content += '<span>' + series[i].data[j][0] + '</span>' + '\t' +
-              //                  '<span>' + series[i].data[j][1] + '</span>' + '</br>'
-              //     }
-              //   }
-              //   return content
-              // }
-            }
+            dataView: {}
           }
         },
         tooltip: {
@@ -110,11 +94,16 @@ export default {
   },
   watch: {
     series(val) {
-      // this.chart.setOption(this.option)
       if (val !== []) {
         this.chart.setOption({ series: val })
       }
     }
+    // options: {
+    //   handler(options) {
+    //     this.chart.setOption(this.options)
+    //   },
+    //   deep: true
+    // }
   },
   mounted() {
     this.initChart()
