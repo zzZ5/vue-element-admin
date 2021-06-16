@@ -70,7 +70,7 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Name" min-width="50px">
+      <el-table-column label="Name" min-width="60px">
         <template slot-scope="{ row }">
           <router-link :to="'/sensor/edit/' + row.id" class="link-type">
             <span class="link-type">{{ row.name }}</span>
@@ -82,12 +82,12 @@
           <span>{{ row.abbreviation }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Type" align="center" width="95">
+      <el-table-column label="Type" align="center" width="80">
         <template slot-scope="{ row }">
           <span> {{ row.type }} </span>
         </template>
       </el-table-column>
-      <el-table-column label="Descript" min-width="150px">
+      <el-table-column label="Descript" min-width="200px">
         <template slot-scope="{ row }">
           <span> {{ row.descript }} </span>
         </template>
