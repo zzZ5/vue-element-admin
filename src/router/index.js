@@ -243,6 +243,13 @@ export const asyncRoutes = [
         name: 'SensorDetail',
         meta: { title: 'Sensor Detail' },
         hidden: true
+      },
+      {
+        path: 'chart/:experimentId/:sensorId',
+        component: () => import('@/views/sensor/chart'),
+        name: 'SensorChart',
+        meta: { title: 'Sensor Chart' },
+        hidden: true
       }
     ]
   },

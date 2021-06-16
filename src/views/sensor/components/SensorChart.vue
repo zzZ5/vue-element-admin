@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import resize from '../mixins/resize'
-import { fetchData } from '@/api/equipment'
+import { fetchData } from '@/api/sensor'
 
 export default {
   mixins: [resize],
@@ -51,12 +51,6 @@ export default {
           trigger: 'axis',
           axisPointer: {
             animation: false
-          },
-          formatter(params) {
-            console.log(params)
-            for (const i in params) {
-              return params[i].marker + params[i].name + ':' + params[i].data.value + '/' + params[i].data.date
-            }
           }
         },
         grid: {
@@ -87,14 +81,15 @@ export default {
         }]
       },
       experimentId: '0',
-      equipmentId: '0',
+      sensorId: '0',
       query: {
         experiment: '0',
         step: 1,
-        count: undefined,
+        size: 999999,
         begin_time: undefined,
         end_time: undefined
-      }
+      },
+      loading: false
     }
   },
   watch: {
@@ -124,29 +119,29 @@ export default {
   created() {
     const experimentId = this.$route.params && this.$route.params.experimentId
     this.experimentId = experimentId
-    const equipmentId = this.$route.params && this.$route.params.equipmentId
-    this.equipmentId = equipmentId
+    const sensorId = this.$route.params && this.$route.params.sensorId
+    this.sensorId = sensorId
     this.query.experiment = this.experimentId
   },
   methods: {
     fetchData() {
       this.chart.showLoading()
-      fetchData(this.equipmentId, this.query).then((response) => {
+      fetchData(this.sensorId, this.query).then((response) => {
         const tempSeries = []
-        response.data.forEach(element => {
-          const series = {
-            name: element.name,
-            type: 'line',
-            smooth: true,
-            showSymbol: false,
-            // hoverAnimation: false,
-            data: []
-          }
-          element.data.forEach(i => {
-            series.data.push([i.measured_time, i.value])
-          })
-          tempSeries.push(series)
+        const data = response.data
+        const series = {
+          name: data.name,
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          // hoverAnimation: false,
+          data: []
+        }
+        data.list.forEach(i => {
+          series.data.push([i.measured_time, i.value])
         })
+        console.log(series)
+        tempSeries.push(series)
         this.series = tempSeries
         this.chart.hideLoading()
       })

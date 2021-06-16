@@ -40,7 +40,7 @@
                     />
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="{command:'chart', equipmentId: row.id}">Chart</el-dropdown-item>
+                    <el-dropdown-item :command="{command:'chart', sensorId: row.id}">Chart</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
                 <small style="padding-left: 5px">({{ row.abbreviation }})</small>
@@ -99,7 +99,7 @@ export default {
   methods: {
     handleCommand(command) {
       if (command.command === 'chart') {
-        this.$router.push({ path: '/equipment/chart/' + this.experimentId + '/' + command.equipmentId })
+        this.$router.push({ path: '/sensor/chart/' + this.experimentId + '/' + command.sensorId })
       }
     },
     fetchData(id) {
