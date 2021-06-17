@@ -53,10 +53,11 @@ export default {
             animation: false
           },
           formatter(params) {
-            console.log(params)
+            let res = params[0].data[0] + '</br>'
             for (const i in params) {
-              return params[i].marker + params[i].name + ':' + params[i].data.value + '/' + params[i].data.date
+              res += params[i].marker + params[i].seriesName + ':' + params[i].data[1] + '</br>'
             }
+            return res
           }
         },
         grid: {
@@ -94,7 +95,8 @@ export default {
         count: undefined,
         begin_time: undefined,
         end_time: undefined
-      }
+      },
+      tempRoute: {}
     }
   },
   watch: {
@@ -122,11 +124,12 @@ export default {
     this.chart = null
   },
   created() {
-    const experimentId = this.$route.params && this.$route.params.experimentId
-    this.experimentId = experimentId
-    const equipmentId = this.$route.params && this.$route.params.equipmentId
-    this.equipmentId = equipmentId
+    this.experimentId = this.$route.query && this.$route.query.experimentId
+    this.equipmentId = this.$route.params && this.$route.params.equipmentId
     this.query.experiment = this.experimentId
+    this.tempRoute = Object.assign({}, this.$route)
+    this.setTagsViewTitle()
+    this.setPageTitle()
   },
   methods: {
     fetchData() {
@@ -154,6 +157,17 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption(this.option)
+    },
+    setTagsViewTitle() {
+      const title = 'Equipment Chart'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title} - ${this.equipmentId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Equipment Chart'
+      document.title = `${title} - ${this.equipmentId}`
     }
   }
 }
