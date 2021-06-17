@@ -89,7 +89,8 @@ export default {
         begin_time: undefined,
         end_time: undefined
       },
-      loading: false
+      loading: false,
+      tempRoute: {}
     }
   },
   watch: {
@@ -117,9 +118,12 @@ export default {
     this.chart = null
   },
   created() {
-    this.experimentId = this.$route.params && this.$route.params.experimentId
+    this.experimentId = this.$route.query && this.$route.query.experimentId
     this.sensorId = this.$route.params && this.$route.params.sensorId
     this.query.experiment = this.experimentId
+    this.tempRoute = Object.assign({}, this.$route)
+    this.setTagsViewTitle()
+    this.setPageTitle()
   },
   methods: {
     fetchData() {
@@ -147,6 +151,17 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption(this.option)
+    },
+    setTagsViewTitle() {
+      const title = 'Sensor Chart'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title} - ${this.sensorId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Sensor Chart'
+      document.title = `${title} - ${this.sensorId}`
     }
   }
 }
