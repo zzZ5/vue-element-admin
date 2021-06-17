@@ -192,14 +192,14 @@ export const asyncRoutes = [
         hidden: true
       },
       {
-        path: 'detail/:experimentId/:equipmentId',
+        path: 'detail/:equipmentId',
         component: () => import('@/views/equipment/detail'),
         name: 'EquipmentDetail',
         meta: { title: 'Equipment Detail' },
         hidden: true
       },
       {
-        path: 'chart/:experimentId/:equipmentId',
+        path: 'chart/:equipmentId',
         component: () => import('@/views/equipment/chart'),
         name: 'EquipmentChart',
         meta: { title: 'Equipment Chart' },
@@ -231,21 +231,21 @@ export const asyncRoutes = [
         meta: { title: 'Create Sensor', icon: 'edit', activeMenu: '/sensor/create' }
       },
       {
-        path: 'edit/:experimentId/:id',
+        path: 'edit/:id',
         component: () => import('@/views/sensor/edit'),
         name: 'SensorEdit',
         meta: { title: 'Sensor Edit' },
         hidden: true
       },
       {
-        path: 'detail/:experimentId/:sensorId',
+        path: 'detail/:sensorId',
         component: () => import('@/views/sensor/detail'),
         name: 'SensorDetail',
         meta: { title: 'Sensor Detail' },
         hidden: true
       },
       {
-        path: 'chart/:experimentId/:sensorId',
+        path: 'chart/:sensorId',
         component: () => import('@/views/sensor/chart'),
         name: 'SensorChart',
         meta: { title: 'Sensor Chart' },
