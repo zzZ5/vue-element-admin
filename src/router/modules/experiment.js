@@ -56,6 +56,20 @@ const experimentRouter = {
       name: 'ExperimentDetail',
       meta: { title: 'Experiment Detail' },
       hidden: true
+    },
+    {
+      path: 'config/:experimentId',
+      component: () => import('@/views/experiment/config'),
+      name: 'ChartConfig',
+      meta: { title: 'Chart Config' },
+      hidden: true
+    },
+    {
+      path: 'chart/:experimentId',
+      component: () => import('@/views/experiment/config'),
+      name: 'ChartConfig',
+      meta: { title: 'Chart Config' },
+      hidden: true
     }
   ]
 }
