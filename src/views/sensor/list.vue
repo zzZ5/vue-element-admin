@@ -87,6 +87,11 @@
           <span> {{ row.type }} </span>
         </template>
       </el-table-column>
+      <el-table-column label="Unit" align="center" width="80">
+        <template slot-scope="{ row }">
+          <span> {{ row.unit }} </span>
+        </template>
+      </el-table-column>
       <el-table-column label="Descript" min-width="200px">
         <template slot-scope="{ row }">
           <span> {{ row.descript }} </span>
@@ -104,10 +109,10 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <el-button size="mini"> Record </el-button>
+          <el-button type="primary" size="mini"> Record </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -146,6 +151,20 @@
               :key="item.key"
               :label="item.display_name"
               :value="item.key"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Unit" prop="unit">
+          <el-select
+            v-model="temp.unit"
+            class="filter-item"
+            placeholder="Please select"
+          >
+            <el-option
+              v-for="(item, index) in unitOptions"
+              :key="item + index"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </el-form-item>
@@ -206,6 +225,7 @@ export default {
         ordering: '-created_time'
       },
       typeOptions,
+      unitOptions: ['℃', '%'],
       orderingOptions: [
         { label: 'ID Ascending', key: 'id' },
         { label: 'ID Descending', key: '-id' },
@@ -236,8 +256,11 @@ export default {
         type: [
           { required: true, message: 'type is required', trigger: 'change' }
         ],
+        unit: [
+          { required: true, message: 'unit is required', trigger: 'change' }
+        ],
         descript: [
-          { required: true, message: 'descript is required', trigger: 'blur' }
+          { required: false, message: 'descript is required', trigger: 'blur' }
         ]
       },
       downloadLoading: false
@@ -310,6 +333,7 @@ export default {
           'Name',
           'Abbreviation',
           'Type',
+          'Unit',
           'Descript',
           'Created time'
         ]
@@ -318,6 +342,7 @@ export default {
           'name',
           'abbreviation',
           'type',
+          'unit',
           'descript',
           'created_time'
         ]

@@ -24,13 +24,13 @@
       style="width: 100%"
     >
 
-      <el-table-column label="Value" min-width="50px">
+      <el-table-column label="Value" min-width="100px">
         <template slot-scope="{ row }">
           <span>{{ row.value }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="Unit" min-width="110px" align="center">
+      <el-table-column label="Unit" min-width="100px" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.unit }}</span>
         </template>
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       list: null,
+      unit: null,
       pagination: { total_size: 0 },
       listLoading: true,
       listQuery: {
@@ -77,26 +78,32 @@ export default {
         size: 100,
         step: 1
       },
-      downloadLoading: false
+      downloadLoading: false,
+      experimentId: '0',
+      sensorId: '0',
+      tempRoute: {}
     }
   },
   created() {
-    const experimentId = this.$route.params && this.$route.params.experimentId
-    this.listQuery.experiment = experimentId
-    const id = this.$route.params && this.$route.params.sensorId
-    this.getList(id)
+    this.experimentId = this.$route.query && this.$route.query.experimentId
+    this.listQuery.experiment = this.experimentId
+    this.sensorId = this.$route.params && this.$route.params.sensorId
+    this.getList(this.sensorId)
+    this.tempRoute = Object.assign({}, this.$route)
+    this.setTagsViewTitle()
+    this.setPageTitle()
   },
   methods: {
     getList(id) {
       this.listLoading = true
       fetchData(id, this.listQuery).then((response) => {
+        const unit = response.data.unit
         this.list = response.data.list
+        this.list.forEach(element => {
+          element['unit'] = unit
+        })
         this.pagination = response.data.pagination
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       })
     },
     handleFilter() {
@@ -135,6 +142,17 @@ export default {
           }
         })
       )
+    },
+    setTagsViewTitle() {
+      const title = 'Sensor Detail'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title} - ${this.sensorId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Sensor Detail'
+      document.title = `${title} - ${this.sensorId}`
     }
   }
 }

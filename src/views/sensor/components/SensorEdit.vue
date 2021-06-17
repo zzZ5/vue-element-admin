@@ -159,11 +159,12 @@ export default {
       postForm: Object.assign({}, defaultForm),
       loading: false,
       typeOptions: ['T', 'H'],
+      unitOptions: ['℃', '%'],
       rules: {
         name: [{ validator: validateRequire }],
         abbreviation: [{ validator: validateRequire }],
         type: [{ validator: validateRequire }],
-        descript: [{ validator: validateRequire }]
+        unit: [{ validator: validateRequire }]
       },
       pagination: {
         total_size: 0
@@ -173,6 +174,7 @@ export default {
         size: 20
       },
       listLoading: false,
+      sensorId: '0',
       tempRoute: {}
     }
   },
@@ -183,8 +185,8 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      this.sensorId = this.$route.params && this.$route.params.id
+      this.fetchData(this.sensorId)
       this.status = 'Edit'
     } else {
       this.status = 'View'

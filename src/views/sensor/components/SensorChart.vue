@@ -117,10 +117,8 @@ export default {
     this.chart = null
   },
   created() {
-    const experimentId = this.$route.params && this.$route.params.experimentId
-    this.experimentId = experimentId
-    const sensorId = this.$route.params && this.$route.params.sensorId
-    this.sensorId = sensorId
+    this.experimentId = this.$route.params && this.$route.params.experimentId
+    this.sensorId = this.$route.params && this.$route.params.sensorId
     this.query.experiment = this.experimentId
   },
   methods: {
