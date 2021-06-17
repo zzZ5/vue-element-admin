@@ -5,27 +5,13 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-
               <div v-if="experimentId==='0'">
                 <b> {{ row.name }} </b>
-                <el-dropdown trigger="click" style="float: right; padding-top: 0px" @command="handleCommand">
-                  <span class="el-dropdown-link">
-                    <el-button
-                      plain
-                      type="text"
-                      style="float: right; padding: 3px 5px"
-                      icon="el-icon-more"
-                    />
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="row.id">Chart</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
                 <small style="padding-left: 5px">({{ row.abbreviation }})</small>
                 <el-tag size="small" style="margin-left: 15px"> {{ row.type }} </el-tag>
               </div>
               <div v-else>
-                <router-link :to="'/sensor/detail/' + experimentId + '/' + row.id" class="link-type">
+                <router-link :to="{path:'/sensor/detail/' + row.id, query:{experimentId:experimentId}}" class="link-type">
                   <span class="link-type">
                     <b> {{ row.name }} </b>
                   </span>
@@ -85,21 +71,25 @@ export default {
   data() {
     return {
       experimentId: '0',
+      equipmentId: '0',
       list: [],
-      loading: false
+      loading: false,
+      tempRoute: {}
     }
   },
   computed: {},
   created() {
-    const experimentId = this.$route.params && this.$route.params.experimentId
-    this.experimentId = experimentId
-    const id = this.$route.params && this.$route.params.equipmentId
-    this.fetchData(id)
+    this.experimentId = this.$route.query && this.$route.query.experimentId
+    this.equipmentId = this.$route.params && this.$route.params.equipmentId
+    this.fetchData(this.equipmentId)
+    this.tempRoute = Object.assign({}, this.$route)
+    this.setTagsViewTitle()
+    this.setPageTitle()
   },
   methods: {
     handleCommand(command) {
       if (command.command === 'chart') {
-        this.$router.push({ path: '/sensor/chart/' + this.experimentId + '/' + command.sensorId })
+        this.$router.push({ path: '/sensor/chart/' + command.sensorId, query: { experimentId: this.experimentId }})
       }
     },
     fetchData(id) {
@@ -108,6 +98,17 @@ export default {
         this.list = response.data.sensor
         console.log(this.list)
       })
+    },
+    setTagsViewTitle() {
+      const title = 'Equipment Detail'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title} - ${this.equipmentId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Equipment Detail'
+      document.title = `${title} - ${this.equipmentId}`
     }
   }
 }

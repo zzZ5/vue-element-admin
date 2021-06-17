@@ -5,7 +5,7 @@
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <router-link :to="'/equipment/detail/' + experimentId + '/'+ row.id" class="link-type">
+              <router-link :to="{path:'/equipment/detail/' + row.id, query:{experimentId:experimentId}}" class="link-type">
                 <span class="link-type"> <b> {{ row.name }} </b></span>
               </router-link>
               <el-dropdown trigger="click" style="float: right; padding-top: 0px" @command="handleCommand">
@@ -28,7 +28,7 @@
               <span>Sensors:</span>
               <div v-for="sensor in row.sensor" :key="sensor.id">
                 <div style="margin: 6px 20px">
-                  <router-link :to="{ path: '/sensor/detail/' + experimentId + '/'+ sensor.id}" class="link-type">
+                  <router-link :to="{ path: '/sensor/detail/' + sensor.id, query:{experimentId:experimentId}}" class="link-type">
                     <span class="link-type"> <b> {{ sensor.name }} </b></span>
                   </router-link>
                   <small style="padding-left: 5px">({{ sensor.abbreviation }})</small>
@@ -55,18 +55,22 @@ export default {
     return {
       experimentId: '0',
       list: [],
-      loading: false
+      loading: false,
+      tempRoute: {}
     }
   },
   computed: {},
   created() {
     this.experimentId = this.$route.params && this.$route.params.id
     this.fetchData(this.experimentId)
+    this.tempRoute = Object.assign({}, this.$route)
+    this.setTagsViewTitle()
+    this.setPageTitle()
   },
   methods: {
     handleCommand(command) {
       if (command.command === 'chart') {
-        this.$router.push({ path: '/equipment/chart/' + this.experimentId + '/' + command.equipmentId })
+        this.$router.push({ path: '/equipment/chart/' + command.equipmentId, query: { experimentId: this.experimentId }})
       }
     },
     fetchData(id) {
@@ -75,6 +79,17 @@ export default {
         this.list = response.data.equipment
         console.log(this.list)
       })
+    },
+    setTagsViewTitle() {
+      const title = 'Experiment Detail'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title} - ${this.experimentId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Experiment Detail'
+      document.title = `${title} - ${this.experimentId}`
     }
   }
 }
