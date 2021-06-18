@@ -217,7 +217,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
+      const id = this.$route.params && this.$route.params.equipmentId
       this.fetchData(id)
       this.status = 'Edit'
     } else {

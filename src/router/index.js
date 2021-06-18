@@ -185,7 +185,7 @@ export const asyncRoutes = [
         meta: { title: 'Create Equipment', icon: 'edit', activeMenu: '/equipment/create', roles: ['admin'] }
       },
       {
-        path: 'edit/:id',
+        path: 'edit/:equipmentId',
         component: () => import('@/views/equipment/edit'),
         name: 'EquipmentEdit',
         meta: { title: 'Equipment Edit' },
@@ -231,7 +231,7 @@ export const asyncRoutes = [
         meta: { title: 'Create Sensor', icon: 'edit', activeMenu: '/sensor/create' }
       },
       {
-        path: 'edit/:id',
+        path: 'edit/:sensorId',
         component: () => import('@/views/sensor/edit'),
         name: 'SensorEdit',
         meta: { title: 'Sensor Edit' },

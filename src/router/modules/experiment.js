@@ -44,14 +44,14 @@ const experimentRouter = {
       ]
     },
     {
-      path: 'edit/:id',
+      path: 'edit/:experimentId',
       component: () => import('@/views/experiment/edit'),
       name: 'ExperimentEdit',
       meta: { title: 'Experiment Edit' },
       hidden: true
     },
     {
-      path: 'detail/:id',
+      path: 'detail/:experimentId',
       component: () => import('@/views/experiment/detail'),
       name: 'ExperimentDetail',
       meta: { title: 'Experiment Detail' },

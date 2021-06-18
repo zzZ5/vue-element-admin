@@ -59,7 +59,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'Equipment',
+  name: 'SensorDetail',
   components: { Pagination },
   directives: { waves },
   filters: {

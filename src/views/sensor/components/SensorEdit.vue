@@ -185,7 +185,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      this.sensorId = this.$route.params && this.$route.params.id
+      this.sensorId = this.$route.params && this.$route.params.sensorId
       this.fetchData(this.sensorId)
       this.status = 'Edit'
     } else {
