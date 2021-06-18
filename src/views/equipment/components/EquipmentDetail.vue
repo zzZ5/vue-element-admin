@@ -1,7 +1,7 @@
 <template>
   <div class="experimentDetail-container">
-    <div v-loading class="experimentDetail-main-container">
-      <el-row :gutter="20" style="margin-top: 50px">
+    <div class="experimentDetail-main-container">
+      <el-row v-loading="loading" :gutter="20" style="margin-top: 50px">
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -96,7 +96,7 @@ export default {
       this.loading = true
       fetchEquipment(id).then((response) => {
         this.list = response.data.sensor
-        console.log(this.list)
+        this.loading = false
       })
     },
     setTagsViewTitle() {

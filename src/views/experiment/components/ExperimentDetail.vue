@@ -9,7 +9,7 @@
       </el-button>
     </sticky>
     <div v-loading class="experimentDetail-main-container">
-      <el-row :gutter="20" style="margin-top: 50px">
+      <el-row v-loading="loading" :gutter="20" style="margin-top: 50px">
         <el-col v-for="row in list" :key="row.id" :span="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -89,6 +89,7 @@ export default {
       this.loading = true
       fetchExperiment(id).then((response) => {
         this.list = response.data.equipment
+        this.loading = false
       })
     },
     setTagsViewTitle() {
