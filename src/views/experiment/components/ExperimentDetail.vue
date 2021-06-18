@@ -1,5 +1,13 @@
 <template>
   <div class="experimentDetail-container">
+    <sticky :z-index="10" class-name="sub-navbar draft">
+      <el-button
+        style="margin-left: 10px"
+        @click="drawChart"
+      >
+        Draw
+      </el-button>
+    </sticky>
     <div v-loading class="experimentDetail-main-container">
       <el-row :gutter="20" style="margin-top: 50px">
         <el-col v-for="row in list" :key="row.id" :span="6">
@@ -46,11 +54,12 @@
 </template>
 
 <script>
+import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchExperiment } from '@/api/experiment'
 
 export default {
   name: 'ExperimentDetail',
-  components: {},
+  components: { Sticky },
   data() {
     return {
       experimentId: '0',
@@ -61,7 +70,7 @@ export default {
   },
   computed: {},
   created() {
-    this.experimentId = this.$route.params && this.$route.params.id
+    this.experimentId = this.$route.params && this.$route.params.experimentId
     this.fetchData(this.experimentId)
     this.tempRoute = Object.assign({}, this.$route)
     this.setTagsViewTitle()
@@ -73,11 +82,13 @@ export default {
         this.$router.push({ path: '/equipment/chart/' + command.equipmentId, query: { experimentId: this.experimentId }})
       }
     },
+    drawChart() {
+      this.$router.push({ path: '/experiment/config/' + this.experimentId })
+    },
     fetchData(id) {
       this.loading = true
       fetchExperiment(id).then((response) => {
         this.list = response.data.equipment
-        console.log(this.list)
       })
     },
     setTagsViewTitle() {
