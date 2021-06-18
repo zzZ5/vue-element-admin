@@ -25,7 +25,7 @@ export default {
     return {
       props: {
         label: 'name',
-        children: 'zones',
+        // children: 'zones',
         isLeaf: 'leaf'
       },
       experimentDetail: {
@@ -47,6 +47,7 @@ export default {
       this.loading = true
       fetchExperiment(id).then((response) => {
         this.equipment = response.data.equipment
+        console.log(Array.from(this.equipment))
         this.loading = false
       })
     },
@@ -54,7 +55,7 @@ export default {
     loadNode(node, resolve) {
       if (node.level === 0) {
         console.log(this.equipment)
-        return resolve([{ name: 'region1' }, { name: 'region2' }])
+        return resolve(Array.from(this.equipment))
       }
       if (node.level > 3) return resolve([])
 
